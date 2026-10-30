@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faculty | SIHMS</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#f4f7fb;color:#263238}
+.sidebar{position:fixed;left:0;top:0;width:240px;height:100vh;background:#12344d;color:white;padding:25px 15px;z-index:10}
+.logo{text-align:center;font-size:25px;font-weight:bold}
+.logo-sub{text-align:center;color:#b9d6e8;font-size:12px;margin:5px 0 28px}
+.sidebar a{display:flex;gap:12px;color:white;text-decoration:none;padding:12px 14px;margin:6px 0;border-radius:8px}
+.sidebar a:hover,.sidebar a.active{background:#1e5a80}
+.main{margin-left:240px;min-height:100vh}
+.topbar{height:72px;background:white;display:flex;align-items:center;justify-content:space-between;padding:0 30px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.topbar h1{color:#12344d;font-size:24px}
+.admin-box{display:flex;align-items:center;gap:12px}
+.avatar{width:38px;height:38px;border-radius:50%;background:#12344d;color:white;display:flex;align-items:center;justify-content:center;font-weight:bold}
+.logout{border:0;background:#e53935;color:white;padding:9px 15px;border-radius:7px;cursor:pointer}
+.content{padding:30px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:25px}
+.stat{background:white;border-radius:14px;padding:20px;box-shadow:0 3px 14px rgba(0,0,0,.07)}
+.stat-icon{font-size:27px;margin-bottom:10px}
+.stat h4{font-size:13px;color:#777}
+.stat p{font-size:27px;font-weight:bold;color:#12344d;margin-top:6px}
+.card{background:white;border-radius:14px;padding:25px;box-shadow:0 3px 14px rgba(0,0,0,.07);margin-bottom:25px}
+.card-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.card-title h2{font-size:20px;color:#12344d}
+.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+label{display:block;font-size:13px;font-weight:bold;color:#444;margin-bottom:7px}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid #d5dce2;border-radius:8px;outline:none;background:white}
+textarea{resize:vertical;min-height:90px}
+input:focus,select:focus,textarea:focus{border-color:#1e5a80}
+.btn{border:0;background:#12344d;color:white;padding:11px 18px;border-radius:8px;cursor:pointer}
+.btn-orange{background:#f39c12}
+.btn-red{background:#e53935}
+.action-row{margin-top:20px;display:flex;gap:10px}
+.search{width:280px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{background:#12344d;color:white;padding:13px;text-align:left;font-size:13px}
+td{padding:13px;border-bottom:1px solid #edf0f2;font-size:13px}
+tr:hover td{background:#f8fbfd}
+.badge{padding:5px 10px;border-radius:20px;font-size:11px;font-weight:bold;background:#e3f2fd;color:#1565c0}
+.small-btn{border:0;color:white;padding:7px 10px;border-radius:6px;cursor:pointer;margin-right:4px}
+.empty{text-align:center;padding:30px;color:#888}
+.footer{text-align:center;color:#888;font-size:12px;padding:10px}
+@media(max-width:950px){.stats{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){
+.sidebar{position:relative;width:100%;height:auto}
+.main{margin-left:0}
+.stats,.form-grid{grid-template-columns:1fr}
+.topbar{height:auto;padding:15px;gap:12px}
+.content{padding:15px}
+.search{width:100%}
+}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+<div class="logo">SIHMS</div>
+<div class="logo-sub">ADMIN PANEL</div>
+
+<a href="dashboard.html">🏠 Dashboard</a>
+<a href="students.html">👨‍🎓 Students</a>
+<a href="faculty.html" class="active">👨‍🏫 Faculty</a>
+<a href="department.html">🏢 Department</a>
+<a href="subjects.html">📚 Subjects</a>
+<a href="attendance.html">📅 Attendance</a>
+<a href="results.html">📊 Results</a>
+<a href="fees.html">💰 Fees</a>
+<a href="reports.html">📄 Reports</a>
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+
+<h1>Faculty Management</h1>
+
+<div class="admin-box">
+<div class="avatar">A</div>
+<span>Administrator</span>
+<button class="logout" onclick="logout()">Logout</button>
+</div>
+
+</header>
+
+<section class="content">
+
+<div class="stats">
+
+<div class="stat">
+<div class="stat-icon">👨‍🏫</div>
+<h4>Total Faculty</h4>
+<p id="totalFaculty">0</p>
+</div>
+
+<div class="stat">
+<div class="stat-icon">🏢</div>
+<h4>Departments</h4>
+<p id="totalDepartments">0</p>
+</div>
+
+<div class="stat">
+<div class="stat-icon">📚</div>
+<h4>Subjects</h4>
+<p id="totalSubjects">0</p>
+</div>
+
+<div class="stat">
+<div class="stat-icon">🎓</div>
+<h4>Professors</h4>
+<p id="professors">0</p>
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+<h2 id="formTitle">➕ Add Faculty</h2>
+</div>
+
+<form id="facultyForm">
+
+<div class="form-grid">
+
+<div>
+<label>Faculty ID</label>
+<input id="facultyId" placeholder="FAC001" required>
+</div>
+
+<div>
+<label>Faculty Name</label>
+<input id="facultyName" placeholder="Enter faculty name" required>
+</div>
+
+<div>
+<label>Email</label>
+<input type="email" id="email" placeholder="faculty@college.com" required>
+</div>
+
+<div>
+<label>Phone</label>
+<input id="phone" placeholder="9876543210" required>
+</div>
+
+<div>
+<label>Department</label>
+<select id="department" required>
+<option value="">Select Department</option>
+</select>
+</div>
+
+<div>
+<label>Designation</label>
+<select id="designation" required>
+<option value="">Select Designation</option>
+<option>Professor</option>
+<option>Associate Professor</option>
+<option>Assistant Professor</option>
+<option>Lecturer</option>
+<option>HOD</option>
+</select>
+</div>
+
+<div>
+<label>Qualification</label>
+<input id="qualification" placeholder="M.Tech / Ph.D">
+</div>
+
+<div>
+<label>Experience</label>
+<input id="experience" placeholder="5 Years">
+</div>
+
+<div>
+<label>Password</label>
+<input type="password" id="password" placeholder="Faculty password">
+</div>
+
+</div>
+
+<div class="action-row">
+
+<button class="btn" type="submit" id="saveBtn">
+Add Faculty
+</button>
+
+<button class="btn btn-orange" type="button" id="cancelBtn" onclick="cancelEdit()" style="display:none">
+Cancel
+</button>
+
+</div>
+
+</form>
+</div>
+
+<div class="card">
+
+<div class="card-title">
+<h2>👨‍🏫 Faculty List</h2>
+<input class="search" id="search" placeholder="Search faculty..." oninput="renderFaculty()">
+</div>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+<tr>
+<th>#</th>
+<th>Faculty ID</th>
+<th>Name</th>
+<th>Email</th>
+<th>Phone</th>
+<th>Department</th>
+<th>Designation</th>
+<th>Qualification</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="facultyTable"></tbody>
+
+</table>
+
+</div>
+</div>
+
+<div class="footer">
+SIHMS © 2026 | Student Information and Management System
+</div>
+
+</section>
+</main>
+
+<script>
+
+let faculty=[];
+let editIndex=-1;
+
+function loadFaculty(){
+
+try{
+faculty=JSON.parse(localStorage.getItem("faculty"))||[];
+if(!Array.isArray(faculty))faculty=[];
+}catch{
+faculty=[];
+}
+
+populateDepartments();
+renderFaculty();
+updateStats();
+
+}
+
+function loadDepartments(){
+
+try{
+const data=JSON.parse(localStorage.getItem("departments"))||[];
+return Array.isArray(data)?data:[];
+}catch{
+return [];
+}
+
+}
+
+function populateDepartments(){
+
+const select=document.getElementById("department");
+
+const departments=loadDepartments();
+
+select.innerHTML='<option value="">Select Department</option>';
+
+departments.forEach(d=>{
+
+const option=document.createElement("option");
+
+option.value=d.departmentName || d.name || "";
+
+option.textContent=
+`${d.departmentCode ? d.departmentCode+" - " : ""}${d.departmentName || d.name || ""}`;
+
+select.appendChild(option);
+
+});
+
+}
+
+document.getElementById("facultyForm").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+const data={
+
+facultyId:document.getElementById("facultyId").value.trim(),
+
+facultyName:document.getElementById("facultyName").value.trim(),
+
+name:document.getElementById("facultyName").value.trim(),
+
+email:document.getElementById("email").value.trim(),
+
+phone:document.getElementById("phone").value.trim(),
+
+department:document.getElementById("department").value,
+
+designation:document.getElementById("designation").value,
+
+qualification:document.getElementById("qualification").value.trim(),
+
+experience:document.getElementById("experience").value.trim(),
+
+password:document.getElementById("password").value,
+
+type:"faculty"
+
+};
+
+if(editIndex===-1){
+
+if(faculty.some(f=>
+String(f.facultyId).toLowerCase()===
+data.facultyId.toLowerCase()
+)){
+
+alert("Faculty ID already exists.");
+return;
+
+}
+
+faculty.push(data);
+
+}else{
+
+faculty[editIndex]=data;
+editIndex=-1;
+
+}
+
+localStorage.setItem("faculty",JSON.stringify(faculty));
+
+this.reset();
+
+document.getElementById("formTitle").textContent="➕ Add Faculty";
+document.getElementById("saveBtn").textContent="Add Faculty";
+document.getElementById("cancelBtn").style.display="none";
+
+renderFaculty();
+updateStats();
+
+});
+
+function renderFaculty(){
+
+const tbody=document.getElementById("facultyTable");
+
+const search=document.getElementById("search").value.toLowerCase();
+
+const filtered=faculty.filter(f=>{
+
+const text=`
+
+${f.facultyId}
+${f.facultyName}
+${f.name}
+${f.email}
+${f.phone}
+${f.department}
+${f.designation}
+${f.qualification}
+
+`.toLowerCase();
+
+return text.includes(search);
+
+});
+
+if(!filtered.length){
+
+tbody.innerHTML=
+`<tr>
+<td colspan="9" class="empty">
+No faculty found.
+</td>
+</tr>`;
+
+return;
+
+}
+
+tbody.innerHTML=filtered.map(f=>{
+
+const index=faculty.indexOf(f);
+
+return `
+
+<tr>
+
+<td>${index+1}</td>
+
+<td><b>${escapeHTML(f.facultyId)}</b></td>
+
+<td>${escapeHTML(f.facultyName||f.name)}</td>
+
+<td>${escapeHTML(f.email)}</td>
+
+<td>${escapeHTML(f.phone)}</td>
+
+<td>
+<span class="badge">
+${escapeHTML(f.department)}
+</span>
+</td>
+
+<td>${escapeHTML(f.designation)}</td>
+
+<td>${escapeHTML(f.qualification)}</td>
+
+<td>
+
+<button
+class="small-btn btn-orange"
+onclick="editFaculty(${index})">
+Edit
+</button>
+
+<button
+class="small-btn btn-red"
+onclick="deleteFaculty(${index})">
+Delete
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+}).join("");
+
+}
+
+function editFaculty(index){
+
+const f=faculty[index];
+
+document.getElementById("facultyId").value=f.facultyId||"";
+document.getElementById("facultyName").value=f.facultyName||f.name||"";
+document.getElementById("email").value=f.email||"";
+document.getElementById("phone").value=f.phone||"";
+document.getElementById("department").value=f.department||"";
+document.getElementById("designation").value=f.designation||"";
+document.getElementById("qualification").value=f.qualification||"";
+document.getElementById("experience").value=f.experience||"";
+document.getElementById("password").value=f.password||"";
+
+editIndex=index;
+
+document.getElementById("formTitle").textContent="✏️ Edit Faculty";
+document.getElementById("saveBtn").textContent="Update Faculty";
+document.getElementById("cancelBtn").style.display="inline-block";
+
+window.scrollTo({top:0,behavior:"smooth"});
+
+}
+
+function cancelEdit(){
+
+editIndex=-1;
+
+document.getElementById("facultyForm").reset();
+
+document.getElementById("formTitle").textContent="➕ Add Faculty";
+document.getElementById("saveBtn").textContent="Add Faculty";
+document.getElementById("cancelBtn").style.display="none";
+
+}
+
+function deleteFaculty(index){
+
+if(!confirm("Delete this faculty?"))return;
+
+faculty.splice(index,1);
+
+localStorage.setItem("faculty",JSON.stringify(faculty));
+
+renderFaculty();
+updateStats();
+
+}
+
+function updateStats(){
+
+document.getElementById("totalFaculty").textContent=faculty.length;
+
+const departments=loadDepartments();
+
+document.getElementById("totalDepartments").textContent=
+departments.length;
+
+let subjects=[];
+
+try{
+subjects=JSON.parse(localStorage.getItem("subjects"))||[];
+}catch{}
+
+document.getElementById("totalSubjects").textContent=
+Array.isArray(subjects)?subjects.length:0;
+
+document.getElementById("professors").textContent=
+faculty.filter(f=>f.designation==="Professor").length;
+
+}
+
+function escapeHTML(v){
+
+return String(v??"")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+function logout(){
+window.location.href="../index.html";
+}
+
+loadFaculty();
+
+</script>
+
+</body>
+</html>

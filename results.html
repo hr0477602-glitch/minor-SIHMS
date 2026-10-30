@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Results | SIHMS</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#f4f7fb;color:#263238}
+.sidebar{position:fixed;left:0;top:0;width:240px;height:100vh;background:#12344d;color:white;padding:25px 15px}
+.logo{text-align:center;font-size:25px;font-weight:bold}
+.logo-sub{text-align:center;color:#b9d6e8;font-size:12px;margin:5px 0 28px}
+.sidebar a{display:flex;gap:12px;color:white;text-decoration:none;padding:12px 14px;margin:6px 0;border-radius:8px}
+.sidebar a:hover,.sidebar a.active{background:#1e5a80}
+.main{margin-left:240px;min-height:100vh}
+.topbar{height:72px;background:white;display:flex;align-items:center;justify-content:space-between;padding:0 30px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.topbar h1{color:#12344d;font-size:24px}
+.admin-box{display:flex;align-items:center;gap:12px}
+.avatar{width:38px;height:38px;border-radius:50%;background:#12344d;color:white;display:flex;align-items:center;justify-content:center;font-weight:bold}
+.logout{border:0;background:#e53935;color:white;padding:9px 15px;border-radius:7px;cursor:pointer}
+.content{padding:30px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:25px}
+.stat{background:white;border-radius:14px;padding:20px;box-shadow:0 3px 14px rgba(0,0,0,.07)}
+.stat-icon{font-size:27px;margin-bottom:10px}
+.stat h4{font-size:13px;color:#777}
+.stat p{font-size:27px;font-weight:bold;color:#12344d;margin-top:6px}
+.card{background:white;border-radius:14px;padding:25px;box-shadow:0 3px 14px rgba(0,0,0,.07);margin-bottom:25px}
+.card-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.card-title h2{font-size:20px;color:#12344d}
+.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+label{display:block;font-size:13px;font-weight:bold;color:#444;margin-bottom:7px}
+input,select{width:100%;padding:11px 12px;border:1px solid #d5dce2;border-radius:8px;outline:none;background:white}
+input:focus,select:focus{border-color:#1e5a80}
+.btn{border:0;background:#12344d;color:white;padding:11px 18px;border-radius:8px;cursor:pointer}
+.btn-orange{background:#f39c12}
+.btn-red{background:#e53935}
+.action-row{margin-top:20px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{background:#12344d;color:white;padding:13px;text-align:left;font-size:13px}
+td{padding:13px;border-bottom:1px solid #edf0f2;font-size:13px}
+.grade{background:#e3f2fd;color:#1565c0;padding:5px 10px;border-radius:20px;font-weight:bold}
+.pass{color:#198754;font-weight:bold}
+.fail{color:#e53935;font-weight:bold}
+.small-btn{border:0;color:white;padding:7px 10px;border-radius:6px;cursor:pointer;margin-right:4px}
+.empty{text-align:center;padding:30px;color:#888}
+.footer{text-align:center;color:#888;font-size:12px;padding:10px}
+@media(max-width:950px){.stats{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.sidebar{position:relative;width:100%;height:auto}.main{margin-left:0}.stats,.form-grid{grid-template-columns:1fr}.topbar{height:auto;padding:15px;gap:12px}.content{padding:15px}}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+<div class="logo">SIHMS</div>
+<div class="logo-sub">ADMIN PANEL</div>
+<a href="dashboard.html">🏠 Dashboard</a>
+<a href="students.html">👨‍🎓 Students</a>
+<a href="faculty.html">👨‍🏫 Faculty</a>
+<a href="department.html">🏢 Department</a>
+<a href="subjects.html">📚 Subjects</a>
+<a href="attendance.html">📅 Attendance</a>
+<a href="results.html" class="active">📊 Results</a>
+<a href="fees.html">💰 Fees</a>
+<a href="reports.html">📄 Reports</a>
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+<h1>Results Management</h1>
+<div class="admin-box">
+<div class="avatar">A</div>
+<span>Administrator</span>
+<button class="logout" onclick="logout()">Logout</button>
+</div>
+</header>
+
+<section class="content">
+
+<div class="stats">
+
+<div class="stat">
+<div class="stat-icon">👨‍🎓</div>
+<h4>Total Students</h4>
+<p id="totalStudents">0</p>
+</div>
+
+<div class="stat">
+<div class="stat-icon">📊</div>
+<h4>Total Results</h4>
+<p id="totalResults">0</p>
+</div>
+
+<div class="stat">
+<div class="stat-icon">✅</div>
+<h4>Passed</h4>
+<p id="passed">0</p>
+</div>
+
+<div class="stat">
+<div class="stat-icon">❌</div>
+<h4>Failed</h4>
+<p id="failed">0</p>
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+<h2>➕ Add Result</h2>
+</div>
+
+<form id="resultForm">
+
+<div class="form-grid">
+
+<div>
+<label>Select Student</label>
+<select id="studentId" required>
+<option value="">Select Student</option>
+</select>
+</div>
+
+<div>
+<label>Semester</label>
+<select id="semester" required>
+<option value="">Select Semester</option>
+<option>Semester 1</option>
+<option>Semester 2</option>
+<option>Semester 3</option>
+<option>Semester 4</option>
+<option>Semester 5</option>
+<option>Semester 6</option>
+<option>Semester 7</option>
+<option>Semester 8</option>
+</select>
+</div>
+
+<div>
+<label>Subject</label>
+<input id="subject" placeholder="Enter subject" required>
+</div>
+
+<div>
+<label>Exam Type</label>
+<select id="examType" required>
+<option value="">Select Exam</option>
+<option>Internal</option>
+<option>Mid Term</option>
+<option>Final</option>
+<option>Practical</option>
+</select>
+</div>
+
+<div>
+<label>Exam Date</label>
+<input type="date" id="examDate" required>
+</div>
+
+<div>
+<label>Maximum Marks</label>
+<input type="number" id="maxMarks" min="1" placeholder="100" required>
+</div>
+
+<div>
+<label>Obtained Marks</label>
+<input type="number" id="obtainedMarks" min="0" placeholder="80" required>
+</div>
+
+</div>
+
+<div class="action-row">
+<button class="btn" type="submit">Save Result</button>
+</div>
+
+</form>
+</div>
+
+<div class="card">
+
+<div class="card-title">
+<h2>📊 Result Records</h2>
+</div>
+
+<div class="table-wrap">
+
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Student ID</th>
+<th>Student Name</th>
+<th>Semester</th>
+<th>Subject</th>
+<th>Exam</th>
+<th>Marks</th>
+<th>%</th>
+<th>Grade</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="resultTable"></tbody>
+</table>
+
+</div>
+</div>
+
+<div class="footer">SIHMS © 2026 | Student Information and Management System</div>
+
+</section>
+</main>
+
+<script>
+let students=[];
+let results=[];
+let editIndex=-1;
+
+function getId(s){
+    return s ? String(s.studentId||s.id||s.rollNo||"") : "";
+}
+
+function getName(s){
+    return s ? (s.name||s.studentName||s.fullName||"Unknown Student") : "Unknown Student";
+}
+
+function loadStudents(){
+    try{
+        students=JSON.parse(localStorage.getItem("students"))||[];
+        if(!Array.isArray(students))students=[];
+    }catch{
+        students=[];
+    }
+
+    students=students.filter(s=>{
+        return String(s.type||"student").toLowerCase()==="student";
+    });
+
+    const select=document.getElementById("studentId");
+    select.innerHTML='<option value="">Select Student</option>';
+
+    students.forEach(s=>{
+        const id=getId(s);
+        if(!id)return;
+
+        const option=document.createElement("option");
+        option.value=id;
+        option.textContent=`${id} - ${getName(s)}`;
+        select.appendChild(option);
+    });
+}
+
+function findStudent(id){
+    return students.find(s=>getId(s)===String(id));
+}
+
+function loadResults(){
+    try{
+        results=JSON.parse(localStorage.getItem("resultRecords"))||[];
+        if(!Array.isArray(results))results=[];
+    }catch{
+        results=[];
+    }
+}
+
+function grade(p){
+    if(p>=90)return"A+";
+    if(p>=80)return"A";
+    if(p>=70)return"B+";
+    if(p>=60)return"B";
+    if(p>=50)return"C";
+    if(p>=40)return"D";
+    return"F";
+}
+
+document.getElementById("resultForm").addEventListener("submit",function(e){
+    e.preventDefault();
+
+    const studentId=document.getElementById("studentId").value;
+    const student=findStudent(studentId);
+
+    if(!student){
+        alert("Please select a student.");
+        return;
+    }
+
+    const max=Number(document.getElementById("maxMarks").value);
+    const obtained=Number(document.getElementById("obtainedMarks").value);
+
+    if(obtained>max){
+        alert("Obtained marks cannot be greater than maximum marks.");
+        return;
+    }
+
+    const percentage=(obtained/max)*100;
+
+    const record={
+        resultId:editIndex===-1
+            ?"RES"+String(results.length+1).padStart(3,"0")
+            :results[editIndex].resultId,
+        studentId,
+        studentName:getName(student),
+        semester:document.getElementById("semester").value,
+        subject:document.getElementById("subject").value,
+        examType:document.getElementById("examType").value,
+        examDate:document.getElementById("examDate").value,
+        maxMarks:max,
+        obtainedMarks:obtained,
+        percentage:percentage.toFixed(2),
+        grade:grade(percentage),
+        status:percentage>=40?"Pass":"Fail"
+    };
+
+    if(editIndex===-1)results.push(record);
+    else{
+        results[editIndex]=record;
+        editIndex=-1;
+    }
+
+    localStorage.setItem("resultRecords",JSON.stringify(results));
+
+    this.reset();
+    render();
+    stats();
+});
+
+function render(){
+    const tbody=document.getElementById("resultTable");
+
+    if(!results.length){
+        tbody.innerHTML='<tr><td colspan="11" class="empty">No result records found.</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML=results.map((r,i)=>{
+        let name=r.studentName||r.name;
+
+        if(!name)name=getName(findStudent(r.studentId));
+
+        return `
+        <tr>
+            <td>${i+1}</td>
+            <td>${escapeHTML(r.studentId)}</td>
+            <td>${escapeHTML(name)}</td>
+            <td>${escapeHTML(r.semester)}</td>
+            <td>${escapeHTML(r.subject)}</td>
+            <td>${escapeHTML(r.examType)}</td>
+            <td>${r.obtainedMarks}/${r.maxMarks}</td>
+            <td>${r.percentage}%</td>
+            <td><span class="grade">${r.grade}</span></td>
+            <td class="${r.status==="Pass"?"pass":"fail"}">${r.status}</td>
+            <td>
+                <button class="small-btn btn-orange" onclick="editResult(${i})">Edit</button>
+                <button class="small-btn btn-red" onclick="deleteResult(${i})">Delete</button>
+            </td>
+        </tr>`;
+    }).join("");
+}
+
+function editResult(i){
+    const r=results[i];
+
+    document.getElementById("studentId").value=r.studentId;
+    document.getElementById("semester").value=r.semester;
+    document.getElementById("subject").value=r.subject;
+    document.getElementById("examType").value=r.examType;
+    document.getElementById("examDate").value=r.examDate;
+    document.getElementById("maxMarks").value=r.maxMarks;
+    document.getElementById("obtainedMarks").value=r.obtainedMarks;
+
+    editIndex=i;
+    window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function deleteResult(i){
+    if(!confirm("Delete this result?"))return;
+
+    results.splice(i,1);
+    localStorage.setItem("resultRecords",JSON.stringify(results));
+
+    render();
+    stats();
+}
+
+function stats(){
+    document.getElementById("totalStudents").textContent=students.length;
+    document.getElementById("totalResults").textContent=results.length;
+    document.getElementById("passed").textContent=results.filter(r=>r.status==="Pass").length;
+    document.getElementById("failed").textContent=results.filter(r=>r.status==="Fail").length;
+}
+
+function escapeHTML(v){
+    return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+function logout(){window.location.href="../index.html";}
+
+loadStudents();
+loadResults();
+render();
+stats();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Students | SIHMS</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#f4f7fb;color:#263238}
+.sidebar{position:fixed;left:0;top:0;width:240px;height:100vh;background:#12344d;color:white;padding:25px 15px;z-index:10}
+.logo{text-align:center;font-size:25px;font-weight:bold;margin-bottom:5px}
+.logo-sub{text-align:center;color:#b9d6e8;font-size:12px;margin-bottom:28px}
+.sidebar a{display:flex;gap:12px;align-items:center;color:white;text-decoration:none;padding:12px 14px;margin:6px 0;border-radius:8px}
+.sidebar a:hover,.sidebar a.active{background:#1e5a80}
+.main{margin-left:240px;min-height:100vh}
+.topbar{height:72px;background:white;display:flex;align-items:center;justify-content:space-between;padding:0 30px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.topbar h1{font-size:24px;color:#12344d}
+.admin-box{display:flex;align-items:center;gap:12px}
+.avatar{width:38px;height:38px;border-radius:50%;background:#12344d;color:white;display:flex;align-items:center;justify-content:center;font-weight:bold}
+.logout{border:0;background:#e53935;color:white;padding:9px 15px;border-radius:7px;cursor:pointer}
+.content{padding:30px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:25px}
+.stat{background:white;border-radius:14px;padding:20px;box-shadow:0 3px 14px rgba(0,0,0,.07)}
+.stat-icon{font-size:27px;margin-bottom:10px}
+.stat h4{font-size:13px;color:#777;margin-bottom:7px}
+.stat p{font-size:27px;font-weight:bold;color:#12344d}
+.card{background:white;border-radius:14px;padding:25px;box-shadow:0 3px 14px rgba(0,0,0,.07);margin-bottom:25px}
+.card-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.card-title h2{font-size:20px;color:#12344d}
+.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+label{display:block;font-size:13px;font-weight:bold;color:#444;margin-bottom:7px}
+input,select{width:100%;padding:11px 12px;border:1px solid #d5dce2;border-radius:8px;outline:none;background:white}
+input:focus,select:focus{border-color:#1e5a80}
+.btn{border:0;background:#12344d;color:white;padding:11px 18px;border-radius:8px;cursor:pointer}
+.btn:hover{background:#1e5a80}
+.btn-orange{background:#f39c12}
+.btn-red{background:#e53935}
+.btn-green{background:#198754}
+.action-row{margin-top:20px;display:flex;gap:10px}
+.search-box{width:280px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{background:#12344d;color:white;padding:13px;text-align:left;font-size:13px}
+td{padding:13px;border-bottom:1px solid #edf0f2;font-size:13px}
+tr:hover td{background:#f8fbfd}
+.badge{display:inline-block;padding:5px 10px;border-radius:20px;font-size:11px;font-weight:bold}
+.badge-blue{background:#e3f2fd;color:#1565c0}
+.empty{text-align:center;padding:30px;color:#888}
+.small-btn{border:0;color:white;padding:7px 10px;border-radius:6px;cursor:pointer;margin-right:4px}
+.footer{text-align:center;color:#888;font-size:12px;padding:10px}
+@media(max-width:950px){.stats{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.sidebar{position:relative;width:100%;height:auto}.main{margin-left:0}.stats,.form-grid{grid-template-columns:1fr}.topbar{padding:15px;height:auto;gap:12px}.content{padding:15px}.search-box{width:100%}.card-title{gap:10px;flex-wrap:wrap}}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+    <div class="logo">SIHMS</div>
+    <div class="logo-sub">ADMIN PANEL</div>
+
+    <a href="dashboard.html">🏠 Dashboard</a>
+    <a href="students.html" class="active">👨‍🎓 Students</a>
+    <a href="faculty.html">👨‍🏫 Faculty</a>
+    <a href="department.html">🏢 Department</a>
+    <a href="subjects.html">📚 Subjects</a>
+    <a href="attendance.html">📅 Attendance</a>
+    <a href="results.html">📊 Results</a>
+    <a href="fees.html">💰 Fees</a>
+    <a href="reports.html">📄 Reports</a>
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+    <h1>Student Management</h1>
+
+    <div class="admin-box">
+        <div class="avatar">A</div>
+        <span>Administrator</span>
+        <button class="logout" onclick="logout()">Logout</button>
+    </div>
+</header>
+
+<section class="content">
+
+<div class="stats">
+    <div class="stat">
+        <div class="stat-icon">👨‍🎓</div>
+        <h4>Total Students</h4>
+        <p id="totalStudents">0</p>
+    </div>
+
+    <div class="stat">
+        <div class="stat-icon">🏢</div>
+        <h4>Departments</h4>
+        <p id="totalDepartments">0</p>
+    </div>
+
+    <div class="stat">
+        <div class="stat-icon">📚</div>
+        <h4>Semesters</h4>
+        <p id="totalSemesters">0</p>
+    </div>
+
+    <div class="stat">
+        <div class="stat-icon">✅</div>
+        <h4>Active Students</h4>
+        <p id="activeStudents">0</p>
+    </div>
+</div>
+
+<div class="card">
+
+    <div class="card-title">
+        <h2 id="formTitle">➕ Add New Student</h2>
+    </div>
+
+    <form id="studentForm">
+
+        <div class="form-grid">
+
+            <div>
+                <label>Student ID</label>
+                <input id="studentId" placeholder="ST001" required>
+            </div>
+
+            <div>
+                <label>Student Name</label>
+                <input id="studentName" placeholder="Enter student name" required>
+            </div>
+
+            <div>
+                <label>Email</label>
+                <input type="email" id="email" placeholder="student@email.com" required>
+            </div>
+
+            <div>
+                <label>Phone</label>
+                <input id="phone" placeholder="9876543210" required>
+            </div>
+
+            <div>
+                <label>Department</label>
+                <select id="department" required>
+                    <option value="">Select Department</option>
+                    <option>BCA</option>
+                    <option>BBA</option>
+                    <option>B.Tech</option>
+                    <option>MCA</option>
+                    <option>MBA</option>
+                    <option>Computer Science</option>
+                    <option>Information Technology</option>
+                </select>
+            </div>
+
+            <div>
+                <label>Semester</label>
+                <select id="semester" required>
+                    <option value="">Select Semester</option>
+                    <option>Semester 1</option>
+                    <option>Semester 2</option>
+                    <option>Semester 3</option>
+                    <option>Semester 4</option>
+                    <option>Semester 5</option>
+                    <option>Semester 6</option>
+                    <option>Semester 7</option>
+                    <option>Semester 8</option>
+                </select>
+            </div>
+
+            <div>
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Student password" required>
+            </div>
+
+        </div>
+
+        <div class="action-row">
+            <button class="btn" type="submit" id="saveBtn">Add Student</button>
+            <button class="btn btn-orange" type="button" id="cancelBtn" onclick="cancelEdit()" style="display:none">Cancel</button>
+        </div>
+
+    </form>
+</div>
+
+<div class="card">
+
+    <div class="card-title">
+        <h2>👨‍🎓 Student List</h2>
+        <input class="search-box" id="search" placeholder="Search student..." oninput="renderStudents()">
+    </div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Department</th>
+                    <th>Semester</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="studentTable"></tbody>
+        </table>
+    </div>
+
+</div>
+
+<div class="footer">SIHMS © 2026 | Student Information and Management System</div>
+
+</section>
+</main>
+
+<script>
+let students = [];
+let editIndex = -1;
+
+function loadStudents(){
+    try{
+        students = JSON.parse(localStorage.getItem("students")) || [];
+        if(!Array.isArray(students)) students=[];
+    }catch{
+        students=[];
+    }
+
+    students = students.map(s => ({
+        ...s,
+        studentId: String(s.studentId || s.id || s.rollNo || ""),
+        name: s.name || s.studentName || s.fullName || "",
+        type: "student"
+    }));
+
+    localStorage.setItem("students",JSON.stringify(students));
+    renderStudents();
+    updateStats();
+}
+
+document.getElementById("studentForm").addEventListener("submit",function(e){
+    e.preventDefault();
+
+    const student = {
+        studentId: document.getElementById("studentId").value.trim(),
+        name: document.getElementById("studentName").value.trim(),
+        studentName: document.getElementById("studentName").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        department: document.getElementById("department").value,
+        semester: document.getElementById("semester").value,
+        password: document.getElementById("password").value,
+        type: "student"
+    };
+
+    if(editIndex === -1){
+        if(students.some(s => String(s.studentId) === student.studentId)){
+            alert("Student ID already exists.");
+            return;
+        }
+        students.push(student);
+    }else{
+        students[editIndex] = student;
+        editIndex = -1;
+    }
+
+    localStorage.setItem("students",JSON.stringify(students));
+
+    this.reset();
+    document.getElementById("formTitle").textContent="➕ Add New Student";
+    document.getElementById("saveBtn").textContent="Add Student";
+    document.getElementById("cancelBtn").style.display="none";
+
+    renderStudents();
+    updateStats();
+});
+
+function renderStudents(){
+    const tbody=document.getElementById("studentTable");
+    const search=document.getElementById("search").value.toLowerCase();
+
+    const filtered=students.filter(s=>{
+        const text=`
+            ${s.studentId}
+            ${s.name}
+            ${s.email}
+            ${s.department}
+            ${s.semester}
+        `.toLowerCase();
+
+        return text.includes(search);
+    });
+
+    if(filtered.length===0){
+        tbody.innerHTML=`<tr><td colspan="8" class="empty">No students found.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML=filtered.map((s)=>{
+        const realIndex=students.indexOf(s);
+
+        return `
+        <tr>
+            <td>${realIndex+1}</td>
+            <td><b>${escapeHTML(s.studentId)}</b></td>
+            <td>${escapeHTML(s.name)}</td>
+            <td>${escapeHTML(s.email)}</td>
+            <td>${escapeHTML(s.phone)}</td>
+            <td><span class="badge badge-blue">${escapeHTML(s.department)}</span></td>
+            <td>${escapeHTML(s.semester)}</td>
+            <td>
+                <button class="small-btn btn-orange" onclick="editStudent(${realIndex})">Edit</button>
+                <button class="small-btn btn-red" onclick="deleteStudent(${realIndex})">Delete</button>
+            </td>
+        </tr>`;
+    }).join("");
+}
+
+function editStudent(index){
+    const s=students[index];
+
+    document.getElementById("studentId").value=s.studentId;
+    document.getElementById("studentName").value=s.name;
+    document.getElementById("email").value=s.email;
+    document.getElementById("phone").value=s.phone;
+    document.getElementById("department").value=s.department;
+    document.getElementById("semester").value=s.semester;
+    document.getElementById("password").value=s.password || "";
+
+    editIndex=index;
+
+    document.getElementById("formTitle").textContent="✏️ Edit Student";
+    document.getElementById("saveBtn").textContent="Update Student";
+    document.getElementById("cancelBtn").style.display="inline-block";
+
+    window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function cancelEdit(){
+    editIndex=-1;
+    document.getElementById("studentForm").reset();
+    document.getElementById("formTitle").textContent="➕ Add New Student";
+    document.getElementById("saveBtn").textContent="Add Student";
+    document.getElementById("cancelBtn").style.display="none";
+}
+
+function deleteStudent(index){
+    if(!confirm("Delete this student?")) return;
+
+    students.splice(index,1);
+    localStorage.setItem("students",JSON.stringify(students));
+
+    renderStudents();
+    updateStats();
+}
+
+function updateStats(){
+    document.getElementById("totalStudents").textContent=students.length;
+
+    const departments=new Set(
+        students.map(s=>s.department).filter(Boolean)
+    );
+
+    const semesters=new Set(
+        students.map(s=>s.semester).filter(Boolean)
+    );
+
+    document.getElementById("totalDepartments").textContent=departments.size;
+    document.getElementById("totalSemesters").textContent=semesters.size;
+    document.getElementById("activeStudents").textContent=students.length;
+}
+
+function escapeHTML(value){
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+function logout(){
+    window.location.href="../index.html";
+}
+
+loadStudents();
+</script>
+
+</body>
+</html>

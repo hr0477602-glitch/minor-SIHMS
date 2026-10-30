@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard - SIHMS</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7f9;
+            color: #12344d;
+        }
+
+        /* HEADER */
+
+        .header {
+            background: #12344d;
+            color: white;
+            padding: 25px 40px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.85;
+        }
+
+        .logout-btn {
+            text-decoration: none;
+            background: #d63031;
+            color: white;
+
+            padding: 11px 20px;
+            border-radius: 7px;
+
+            font-weight: bold;
+        }
+
+        .logout-btn:hover {
+            background: #b71c1c;
+        }
+
+        /* MAIN */
+
+        .container {
+            max-width: 1200px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            font-size: 24px;
+            margin-bottom: 6px;
+        }
+
+        .welcome p {
+            color: #667085;
+        }
+
+        /* MODULE GRID */
+
+        .module-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(240px, 1fr));
+
+            gap: 22px;
+        }
+
+        .module {
+            background: white;
+
+            padding: 28px 22px;
+
+            border-radius: 12px;
+
+            text-decoration: none;
+
+            color: #12344d;
+
+            border: 1px solid #e4e8eb;
+
+            box-shadow:
+                0 4px 12px rgba(0, 0, 0, 0.05);
+
+            transition: 0.2s;
+        }
+
+        .module:hover {
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 8px 20px rgba(0, 0, 0, 0.10);
+        }
+
+        .module-icon {
+            width: 55px;
+            height: 55px;
+
+            border-radius: 10px;
+
+            background: #e8f4f8;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 28px;
+
+            margin-bottom: 17px;
+        }
+
+        .module h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .module p {
+            font-size: 13px;
+            color: #667085;
+            line-height: 1.5;
+        }
+
+        /* FOOTER */
+
+        .footer {
+            text-align: center;
+
+            margin-top: 45px;
+
+            color: #8995a3;
+
+            font-size: 13px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            .header {
+                padding: 20px;
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+            .header h1 {
+                font-size: 23px;
+            }
+
+            .container {
+                margin-top: 25px;
+
+                padding:
+                    0 12px;
+            }
+
+            .module-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================
+     HEADER
+===================================== -->
+
+<div class="header">
+
+    <div>
+
+        <h1>
+            SIHMS Admin Dashboard
+        </h1>
+
+        <p>
+            Student Information and Management System
+        </p>
+
+    </div>
+
+
+    <a
+        href="../index.html"
+        class="logout-btn"
+    >
+        Logout
+    </a>
+
+</div>
+
+
+
+<!-- =====================================
+     MAIN
+===================================== -->
+
+<div class="container">
+
+
+    <div class="welcome">
+
+        <h2>
+            Welcome, Admin 👋
+        </h2>
+
+        <p>
+            Manage students, faculty, departments,
+            subjects, attendance, results and fees.
+        </p>
+
+    </div>
+
+
+
+    <!-- =================================
+         MODULES
+    ================================== -->
+
+    <div class="module-grid">
+
+
+        <!-- STUDENT MANAGEMENT -->
+
+        <a
+            href="students.html"
+            class="module"
+        >
+
+            <div class="module-icon">
+                🎓
+            </div>
+
+            <h3>
+                Student Management
+            </h3>
+
+            <p>
+                Add, edit, delete and manage
+                student information.
+            </p>
+
+        </a>
+
+
+
+        <!-- FACULTY -->
+
+        <a
+            href="faculty.html"
+            class="module"
+        >
+
+            <div class="module-icon">
+                👨‍🏫
+            </div>
+
+            <h3>
+                Faculty Management
+            </h3>
+
+            <p>
+                Manage faculty members and
+                their information.
+            </p>
+
+        </a>
+
+
+
+        <!-- DEPARTMENT -->
+
+        <a
+            href="department.html"
+            class="module"
+        >
+
+            <div class="module-icon">
+                🏢
+            </div>
+
+            <h3>
+                Department Management
+            </h3>
+
+            <p>
+                Add and manage academic
+                departments.
+            </p>
+
+        </a>
+
+
+
+        <!-- SUBJECTS -->
+
+        <a
+            href="subjects.html"
+            class="module"
+        >
+
+            <div class="module-icon">
+                📚
+            </div>
+
+            <h3>
+                Subject Management
+            </h3>
+
+            <p>
+                Manage subjects and
+                academic courses.
+            </p>
+
+        </a>
+
+
+
+        <!-- ATTENDANCE -->
+
+        <a
+            href="attendance.html"
+            class="module"
+        >
+
+            <div class="module-icon">
+                📅
+            </div>
+
+            <h3>
+                Attendance Management
+            </h3>
+
+            <p>
+                Manage student attendance
+                records.
+            </p>
+
+        </a>
+
+
+
+        <!-- RESULTS -->
+
+        <a
+            href="results.html"
+            class="module"
+        >
+
+            <div class="module-icon">
+                📊
+            </div>
+
+            <h3>
+                Results Management
+            </h3>
+
+            <p>
+                Add and manage student
+                examination results.
+            </p>
+
+        </a>
+
+
+
+        <!-- FEES -->
+
+        <a
+            href="fees.html"
+            class="module"
+        >
+
+            <div class="module-icon">
+                💰
+            </div>
+
+            <h3>
+                Fees Management
+            </h3>
+
+            <p>
+                Manage student fees,
+                payments and pending amounts.
+            </p>
+
+        </a>
+
+
+
+        <!-- REPORTS -->
+
+        <a
+            href="reports.html"
+            class="module"
+        >
+
+            <div class="module-icon">
+                📑
+            </div>
+
+            <h3>
+                Reports
+            </h3>
+
+            <p>
+                View and generate academic
+                management reports.
+            </p>
+
+        </a>
+
+
+    </div>
+
+
+
+    <div class="footer">
+
+        SIHMS © 2026 |
+        Student Information and Management System
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>
