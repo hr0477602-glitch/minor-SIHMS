@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Student Dashboard - SIHMS</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(
+                135deg,
+                #0b263d,
+                #12647d,
+                #20a6c5
+            );
+            padding: 20px;
+        }
+
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+
+        /* HEADER */
+
+        .header {
+            background: #fff;
+            padding: 25px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0, 0, 0, 0.15);
+        }
+
+
+        .header h1 {
+            color: #12344d;
+            margin-bottom: 6px;
+        }
+
+
+        .header p {
+            color: #777;
+        }
+
+
+        .logout {
+            border: none;
+            background: #d63031;
+            color: white;
+
+            padding: 11px 18px;
+            border-radius: 8px;
+
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+
+        .logout:hover {
+            background: #b71c1c;
+        }
+
+
+        /* CARD */
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0, 0, 0, 0.15);
+        }
+
+
+        .card h2 {
+            color: #12344d;
+            margin-bottom: 20px;
+        }
+
+
+        /* STUDENT INFO */
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+
+        .info-box {
+            background: #f3fafc;
+            padding: 16px;
+            border-radius: 10px;
+        }
+
+
+        .info-box label {
+            display: block;
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 7px;
+        }
+
+
+        .info-box span {
+            color: #12344d;
+            font-size: 15px;
+            font-weight: bold;
+            word-break: break-word;
+        }
+
+
+        /* SERVICES */
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+
+        .menu-btn {
+            border: none;
+            background: #eef7fa;
+            color: #12344d;
+
+            padding: 20px;
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            font-size: 15px;
+            font-weight: bold;
+
+            transition: 0.2s;
+        }
+
+
+        .menu-btn:hover {
+            background: #dceff4;
+            transform: translateY(-2px);
+        }
+
+
+        /* MESSAGE */
+
+        .message {
+            background: #fff4e5;
+            color: #9a6500;
+
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+
+            display: none;
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            body {
+                padding: 10px;
+            }
+
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div>
+
+            <h1>
+                Student Dashboard
+            </h1>
+
+            <p id="welcomeText">
+                Welcome, Student
+            </p>
+
+        </div>
+
+
+        <button
+            class="logout"
+            onclick="logout()"
+        >
+            Logout
+        </button>
+
+    </div>
+
+
+
+    <!-- MESSAGE -->
+
+    <div
+        id="messageBox"
+        class="message"
+    >
+    </div>
+
+
+
+    <!-- STUDENT INFORMATION -->
+
+    <div class="card">
+
+        <h2>
+            👨‍🎓 Student Information
+        </h2>
+
+
+        <div class="info-grid">
+
+
+            <div class="info-box">
+
+                <label>
+                    Student Name
+                </label>
+
+                <span id="studentName">
+                    Loading...
+                </span>
+
+            </div>
+
+
+
+            <div class="info-box">
+
+                <label>
+                    Enrollment Number
+                </label>
+
+                <span id="enrollment">
+                    Loading...
+                </span>
+
+            </div>
+
+
+
+            <div class="info-box">
+
+                <label>
+                    Email
+                </label>
+
+                <span id="email">
+                    Loading...
+                </span>
+
+            </div>
+
+
+
+            <div class="info-box">
+
+                <label>
+                    Phone
+                </label>
+
+                <span id="phone">
+                    Loading...
+                </span>
+
+            </div>
+
+
+
+            <div class="info-box">
+
+                <label>
+                    Department
+                </label>
+
+                <span id="department">
+                    Loading...
+                </span>
+
+            </div>
+
+
+
+            <div class="info-box">
+
+                <label>
+                    Semester
+                </label>
+
+                <span id="semester">
+                    Loading...
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- STUDENT SERVICES -->
+
+    <div class="card">
+
+        <h2>
+            📚 Student Services
+        </h2>
+
+
+        <div class="menu-grid">
+
+
+            <button
+                class="menu-btn"
+                onclick="openPage('attendance.html')"
+            >
+                📋 Attendance
+            </button>
+
+
+
+            <button
+                class="menu-btn"
+                onclick="openPage('results.html')"
+            >
+                📊 Results
+            </button>
+
+
+
+            <button
+                class="menu-btn"
+                onclick="openPage('fees.html')"
+            >
+                💰 Fees
+            </button>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =========================================
+   GET JSON FROM LOCALSTORAGE
+========================================= */
+
+function getJSON(key) {
+
+    try {
+
+        const value =
+            localStorage.getItem(key);
+
+        if (!value) {
+            return null;
+        }
+
+        return JSON.parse(value);
+
+    }
+
+    catch (error) {
+
+        return null;
+
+    }
+
+}
+
+
+/* =========================================
+   FIND LOGGED IN STUDENT
+========================================= */
+
+function findStudent() {
+
+
+    let student = null;
+
+
+    /* METHOD 1 */
+
+    student =
+        getJSON("loggedInStudentData");
+
+    if (student) {
+        return student;
+    }
+
+
+    /* METHOD 2 */
+
+    student =
+        getJSON("loggedInUser");
+
+    if (
+        student &&
+        typeof student === "object"
+    ) {
+        return student;
+    }
+
+
+    /* METHOD 3 */
+
+    student =
+        getJSON("currentStudent");
+
+    if (student) {
+        return student;
+    }
+
+
+    /* METHOD 4 */
+
+    student =
+        getJSON("student");
+
+    if (student) {
+        return student;
+    }
+
+
+    /* GET LOGIN ID */
+
+    const loginKeys = [
+
+        "loggedInStudent",
+
+        "studentId",
+
+        "studentID",
+
+        "enrollment",
+
+        "enrollmentNo",
+
+        "enrollmentNumber",
+
+        "currentStudentId"
+
+    ];
+
+
+    let loginId = null;
+
+
+    for (
+        let i = 0;
+        i < loginKeys.length;
+        i++
+    ) {
+
+        const value =
+            localStorage.getItem(
+                loginKeys[i]
+            );
+
+        if (value) {
+
+            loginId = value;
+
+            break;
+
+        }
+
+    }
+
+
+    /* GET STUDENTS */
+
+    const students =
+        getJSON("students");
+
+
+    if (Array.isArray(students)) {
+
+
+        if (loginId) {
+
+
+            const cleanId =
+                String(loginId)
+                .replace(/^"|"$/g, "")
+                .trim()
+                .toLowerCase();
+
+
+            const found =
+                students.find(
+                    function(item) {
+
+
+                        if (!item) {
+                            return false;
+                        }
+
+
+                        const values = [
+
+                            item.id,
+
+                            item.studentId,
+
+                            item.studentID,
+
+                            item.enrollment,
+
+                            item.enrollmentNo,
+
+                            item.enrollmentNumber,
+
+                            item.rollNo,
+
+                            item.rollNumber,
+
+                            item.email,
+
+                            item.username
+
+                        ];
+
+
+                        return values.some(
+                            function(value) {
+
+                                return (
+                                    value !== undefined
+                                    &&
+                                    value !== null
+                                    &&
+                                    String(value)
+                                    .trim()
+                                    .toLowerCase()
+                                    === cleanId
+                                );
+
+                            }
+                        );
+
+                    }
+                );
+
+
+            if (found) {
+
+                return found;
+
+            }
+
+        }
+
+
+        /* IF ONLY ONE STUDENT */
+
+        if (students.length === 1) {
+
+            return students[0];
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================
+   GET STUDENT FIELD
+========================================= */
+
+function getField(
+    student,
+    names
+) {
+
+    if (!student) {
+
+        return "";
+
+    }
+
+
+    for (
+        let i = 0;
+        i < names.length;
+        i++
+    ) {
+
+        const key =
+            names[i];
+
+
+        if (
+
+            student[key] !== undefined
+            &&
+            student[key] !== null
+            &&
+            String(student[key])
+            .trim()
+            !== ""
+
+        ) {
+
+            return student[key];
+
+        }
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =========================================
+   DISPLAY STUDENT
+========================================= */
+
+function displayStudent(student) {
+
+
+    if (!student) {
+
+
+        document.getElementById(
+            "studentName"
+        ).textContent =
+            "Not Found";
+
+
+        document.getElementById(
+            "enrollment"
+        ).textContent =
+            "Not Found";
+
+
+        document.getElementById(
+            "email"
+        ).textContent =
+            "Not Found";
+
+
+        document.getElementById(
+            "phone"
+        ).textContent =
+            "Not Found";
+
+
+        document.getElementById(
+            "department"
+        ).textContent =
+            "Not Found";
+
+
+        document.getElementById(
+            "semester"
+        ).textContent =
+            "Not Found";
+
+
+        const box =
+            document.getElementById(
+                "messageBox"
+            );
+
+
+        box.style.display =
+            "block";
+
+
+        box.textContent =
+            "Student data could not be found. Please login again.";
+
+
+        return;
+
+    }
+
+
+    /* NAME */
+
+    const name =
+        getField(
+            student,
+            [
+
+                "name",
+
+                "studentName",
+
+                "fullName",
+
+                "full_name",
+
+                "student_name"
+
+            ]
+        );
+
+
+    /* ENROLLMENT */
+
+    const enrollment =
+        getField(
+            student,
+            [
+
+                "studentId",
+
+                "studentID",
+
+                "student_id",
+
+                "enrollment",
+
+                "enrollmentNo",
+
+                "enrollmentNumber",
+
+                "rollNo",
+
+                "rollNumber",
+
+                "id"
+
+            ]
+        );
+
+
+    /* EMAIL */
+
+    const email =
+        getField(
+            student,
+            [
+
+                "email",
+
+                "emailAddress",
+
+                "studentEmail"
+
+            ]
+        );
+
+
+    /* PHONE */
+
+    const phone =
+        getField(
+            student,
+            [
+
+                "phone",
+
+                "mobile",
+
+                "mobileNo",
+
+                "phoneNumber",
+
+                "contact",
+
+                "contactNo"
+
+            ]
+        );
+
+
+    /* DEPARTMENT */
+
+    const department =
+        getField(
+            student,
+            [
+
+                "department",
+
+                "departmentName",
+
+                "branch",
+
+                "course",
+
+                "program"
+
+            ]
+        );
+
+
+    /* SEMESTER */
+
+    const semester =
+        getField(
+            student,
+            [
+
+                "semester",
+
+                "sem",
+
+                "currentSemester"
+
+            ]
+        );
+
+
+    /* DISPLAY */
+
+    document.getElementById(
+        "studentName"
+    ).textContent =
+        name || "Not Available";
+
+
+    document.getElementById(
+        "enrollment"
+    ).textContent =
+        enrollment || "Not Available";
+
+
+    document.getElementById(
+        "email"
+    ).textContent =
+        email || "Not Available";
+
+
+    document.getElementById(
+        "phone"
+    ).textContent =
+        phone || "Not Available";
+
+
+    document.getElementById(
+        "department"
+    ).textContent =
+        department || "Not Available";
+
+
+    document.getElementById(
+        "semester"
+    ).textContent =
+        semester || "Not Available";
+
+
+    document.getElementById(
+        "welcomeText"
+    ).textContent =
+        "Welcome, " +
+        (name || "Student");
+
+
+    /* SAVE CURRENT STUDENT */
+
+    localStorage.setItem(
+        "loggedInStudentData",
+        JSON.stringify(student)
+    );
+
+}
+
+
+/* =========================================
+   OPEN PAGE
+========================================= */
+
+function openPage(page) {
+
+    window.location.href =
+        page;
+
+}
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+function logout() {
+
+
+    localStorage.removeItem(
+        "loggedInStudent"
+    );
+
+
+    localStorage.removeItem(
+        "loggedInStudentData"
+    );
+
+
+    localStorage.removeItem(
+        "currentStudent"
+    );
+
+
+    localStorage.removeItem(
+        "loggedInUser"
+    );
+
+
+    window.location.href =
+        "../index.html";
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+
+        const student =
+            findStudent();
+
+
+        displayStudent(
+            student
+        );
+
+
+    }
+);
+
+
+</script>
+
+
+</body>
+
+</html>

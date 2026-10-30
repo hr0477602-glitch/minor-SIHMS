@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Student Information Management System</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<div class="login-container">
+
+
+    <!-- ========================================
+         LEFT SECTION
+    ========================================= -->
+
+    <div class="login-info">
+
+
+        <div class="logo">
+
+            <img
+                src="assets/images/college-logo.jpg"
+                alt="Kilachand Devchand Polytechnic Patan Logo"
+            >
+
+        </div>
+
+
+        <h1>
+            Student Information
+            <br>
+            Management System
+        </h1>
+
+
+        <p class="college-name">
+            Kilachand Devchand Polytechnic, Patan
+        </p>
+
+
+        <p class="description">
+            A complete system to manage students,
+            faculty, departments, attendance,
+            results and fees.
+        </p>
+
+
+        <div class="features">
+
+            <p>✓ Student Management</p>
+
+            <p>✓ Faculty Management</p>
+
+            <p>✓ Department Management</p>
+
+            <p>✓ Attendance Management</p>
+
+            <p>✓ Result Management</p>
+
+            <p>✓ Fees Management</p>
+
+            <p>✓ Reports</p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ========================================
+         LOGIN SECTION
+    ========================================= -->
+
+    <div class="login-box">
+
+
+        <div class="login-icon">
+            🔐
+        </div>
+
+
+        <h2>
+            Login
+        </h2>
+
+
+        <p class="subtitle">
+            Select your role and login
+        </p>
+
+
+        <!-- MESSAGE -->
+
+        <div
+            id="message"
+            style="
+                display:none;
+                padding:12px;
+                border-radius:8px;
+                margin-bottom:15px;
+                font-size:14px;
+            "
+        >
+        </div>
+
+
+        <!-- ROLE BUTTONS -->
+
+        <div class="roles">
+
+
+            <button
+                type="button"
+                class="role-btn active"
+                onclick="selectRole('student', this)"
+            >
+                Student
+            </button>
+
+
+            <button
+                type="button"
+                class="role-btn"
+                onclick="selectRole('faculty', this)"
+            >
+                Faculty
+            </button>
+
+
+            <button
+                type="button"
+                class="role-btn"
+                onclick="selectRole('admin', this)"
+            >
+                Admin
+            </button>
+
+
+        </div>
+
+
+
+        <!-- LOGIN FORM -->
+
+        <form
+            onsubmit="login(event)"
+        >
+
+
+            <div class="form-group">
+
+                <label for="userId">
+                    User ID
+                </label>
+
+                <input
+                    type="text"
+                    id="userId"
+                    placeholder="Enter Student ID"
+                    autocomplete="username"
+                    required
+                >
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+
+            </div>
+
+
+
+            <button
+                type="submit"
+                class="login-btn"
+            >
+                Login
+            </button>
+
+
+        </form>
+
+
+
+        <!-- LOGIN INFORMATION -->
+
+        <div class="demo-login">
+
+
+            <h4>
+                Login Information
+            </h4>
+
+
+            
+
+
+            <p>
+                <b>Admin:</b>
+                ADMIN / admin123
+            </p>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* ========================================
+   CURRENT ROLE
+======================================== */
+
+let selectedRole = "student";
+
+
+
+/* ========================================
+   SELECT ROLE
+======================================== */
+
+function selectRole(role, button) {
+
+
+    selectedRole = role;
+
+
+    document
+        .querySelectorAll(".role-btn")
+        .forEach(function(btn) {
+
+            btn.classList.remove("active");
+
+        });
+
+
+    button.classList.add("active");
+
+
+    const userId =
+        document.getElementById("userId");
+
+
+    const password =
+        document.getElementById("password");
+
+
+    userId.value = "";
+    password.value = "";
+
+
+    if (role === "student") {
+
+        userId.placeholder =
+            "Enter Student ID";
+
+        password.placeholder =
+            "Enter your password";
+
+    }
+
+
+    else if (role === "faculty") {
+
+        userId.placeholder =
+            "Enter Faculty ID";
+
+        password.placeholder =
+            "Enter your password";
+
+    }
+
+
+    else if (role === "admin") {
+
+        userId.placeholder =
+            "Enter Admin ID";
+
+        password.placeholder =
+            "Enter Admin password";
+
+    }
+
+
+    hideMessage();
+
+
+}
+
+
+
+/* ========================================
+   SHOW MESSAGE
+======================================== */
+
+function showMessage(text, type) {
+
+
+    const message =
+        document.getElementById("message");
+
+
+    message.style.display =
+        "block";
+
+
+    message.textContent =
+        text;
+
+
+    if (type === "success") {
+
+        message.style.background =
+            "#dcfce7";
+
+        message.style.color =
+            "#166534";
+
+    }
+
+    else {
+
+        message.style.background =
+            "#fee2e2";
+
+        message.style.color =
+            "#991b1b";
+
+    }
+
+
+}
+
+
+
+/* ========================================
+   HIDE MESSAGE
+======================================== */
+
+function hideMessage() {
+
+    document
+        .getElementById("message")
+        .style.display =
+        "none";
+
+}
+
+
+
+/* ========================================
+   READ LOCALSTORAGE DATA
+======================================== */
+
+function getStorageData(keys) {
+
+
+    for (let i = 0; i < keys.length; i++) {
+
+
+        try {
+
+
+            const saved =
+                localStorage.getItem(keys[i]);
+
+
+            if (!saved) {
+
+                continue;
+
+            }
+
+
+            const data =
+                JSON.parse(saved);
+
+
+            if (Array.isArray(data)) {
+
+                return data;
+
+            }
+
+
+            if (
+                typeof data === "object"
+                &&
+                data !== null
+            ) {
+
+                return [data];
+
+            }
+
+
+        }
+
+        catch (error) {
+
+            console.log(
+                "Storage error:",
+                keys[i]
+            );
+
+        }
+
+
+    }
+
+
+    return [];
+
+}
+
+
+
+/* ========================================
+   FIND USER BY ID
+======================================== */
+
+function findUserById(
+    users,
+    userId,
+    possibleIdFields
+) {
+
+
+    const enteredId =
+        String(userId)
+        .trim()
+        .toLowerCase();
+
+
+    return users.find(function(user) {
+
+
+        if (!user) {
+
+            return false;
+
+        }
+
+
+        for (
+            let i = 0;
+            i < possibleIdFields.length;
+            i++
+        ) {
+
+
+            const field =
+                possibleIdFields[i];
+
+
+            if (
+                user[field] !== undefined
+                &&
+                user[field] !== null
+            ) {
+
+
+                const savedId =
+                    String(user[field])
+                    .trim()
+                    .toLowerCase();
+
+
+                if (
+                    savedId === enteredId
+                ) {
+
+                    return true;
+
+                }
+
+            }
+
+
+        }
+
+
+        return false;
+
+
+    });
+
+
+}
+
+
+
+/* ========================================
+   GET PASSWORD
+======================================== */
+
+function getPassword(user) {
+
+
+    const passwordFields = [
+
+        "password",
+
+        "studentPassword",
+
+        "facultyPassword",
+
+        "student_password",
+
+        "faculty_password",
+
+        "pass"
+
+    ];
+
+
+    for (
+        let i = 0;
+        i < passwordFields.length;
+        i++
+    ) {
+
+
+        const field =
+            passwordFields[i];
+
+
+        if (
+            user[field] !== undefined
+            &&
+            user[field] !== null
+            &&
+            String(user[field]).trim() !== ""
+        ) {
+
+            return String(user[field]);
+
+        }
+
+
+    }
+
+
+    return "";
+
+
+}
+
+
+
+/* ========================================
+   LOGIN
+======================================== */
+
+function login(event) {
+
+
+    event.preventDefault();
+
+
+    const userId =
+        document
+        .getElementById("userId")
+        .value
+        .trim();
+
+
+    const password =
+        document
+        .getElementById("password")
+        .value;
+
+
+    if (
+        userId === ""
+        ||
+        password === ""
+    ) {
+
+
+        showMessage(
+            "Please enter User ID and Password.",
+            "error"
+        );
+
+
+        return;
+
+    }
+
+
+
+    /* ====================================
+       STUDENT LOGIN
+    ===================================== */
+
+    if (selectedRole === "student") {
+
+
+        const students =
+            getStorageData([
+
+                "students",
+
+                "student",
+
+                "studentData",
+
+                "studentList"
+
+            ]);
+
+
+
+        const student =
+            findUserById(
+
+                students,
+
+                userId,
+
+                [
+
+                    "studentId",
+
+                    "studentID",
+
+                    "student_id",
+
+                    "id",
+
+                    "enrollment",
+
+                    "enrollmentNo",
+
+                    "enrollmentNumber",
+
+                    "rollNo"
+
+                ]
+
+            );
+
+
+
+        if (!student) {
+
+
+            showMessage(
+                "Student ID not found.",
+                "error"
+            );
+
+
+            return;
+
+        }
+
+
+
+        const savedPassword =
+            getPassword(student);
+
+
+
+        if (
+            password !== savedPassword
+        ) {
+
+
+            showMessage(
+                "Incorrect Student password.",
+                "error"
+            );
+
+
+            return;
+
+        }
+
+
+
+        localStorage.setItem(
+
+            "loggedInStudent",
+
+            userId
+
+        );
+
+
+
+        localStorage.setItem(
+
+            "loggedInStudentData",
+
+            JSON.stringify(student)
+
+        );
+
+
+
+        showMessage(
+            "Student login successful!",
+            "success"
+        );
+
+
+
+        setTimeout(function() {
+
+
+            window.location.href =
+                "student/dashboard.html";
+
+
+        }, 500);
+
+
+        return;
+
+    }
+
+
+
+    /* ====================================
+       FACULTY LOGIN
+    ===================================== */
+
+    if (selectedRole === "faculty") {
+
+
+        /*
+           CHECK ALL POSSIBLE
+           FACULTY STORAGE KEYS
+        */
+
+        const faculties =
+            getStorageData([
+
+                "faculties",
+
+                "faculty",
+
+                "facultyData",
+
+                "facultyList"
+
+            ]);
+
+
+
+        /*
+           FIND FACULTY
+        */
+
+        const faculty =
+            findUserById(
+
+                faculties,
+
+                userId,
+
+                [
+
+                    "facultyId",
+
+                    "facultyID",
+
+                    "faculty_id",
+
+                    "id",
+
+                    "userId",
+
+                    "userID",
+
+                    "username",
+
+                    "email"
+
+                ]
+
+            );
+
+
+
+        /*
+           FACULTY NOT FOUND
+        */
+
+        if (!faculty) {
+
+
+            showMessage(
+                "Faculty ID not found. Please add Faculty from Faculty Management first.",
+                "error"
+            );
+
+
+            return;
+
+        }
+
+
+
+        /*
+           GET PASSWORD
+        */
+
+        const savedPassword =
+            getPassword(faculty);
+
+
+
+        /*
+           CHECK PASSWORD
+        */
+
+        if (
+            password !== savedPassword
+        ) {
+
+
+            showMessage(
+                "Incorrect Faculty password.",
+                "error"
+            );
+
+
+            return;
+
+        }
+
+
+
+        /*
+           SAVE FACULTY LOGIN
+        */
+
+        localStorage.setItem(
+
+            "loggedInFaculty",
+
+            userId
+
+        );
+
+
+
+        localStorage.setItem(
+
+            "loggedInFacultyData",
+
+            JSON.stringify(faculty)
+
+        );
+
+
+
+        showMessage(
+            "Faculty login successful!",
+            "success"
+        );
+
+
+
+        /*
+           REDIRECT
+        */
+
+        setTimeout(function() {
+
+
+            window.location.href =
+                "faculty/dashboard.html";
+
+
+        }, 500);
+
+
+        return;
+
+    }
+
+
+
+    /* ====================================
+       ADMIN LOGIN
+    ===================================== */
+
+    if (selectedRole === "admin") {
+
+
+        if (
+
+            userId.toUpperCase() === "ADMIN"
+
+            &&
+
+            password === "admin123"
+
+        ) {
+
+
+            localStorage.setItem(
+                "loggedInAdmin",
+                "true"
+            );
+
+
+            showMessage(
+                "Admin login successful!",
+                "success"
+            );
+
+
+            setTimeout(function() {
+
+
+                window.location.href =
+                    "admin/dashboard.html";
+
+
+            }, 500);
+
+
+        }
+
+
+        else {
+
+
+            showMessage(
+                "Invalid Admin ID or Password.",
+                "error"
+            );
+
+
+        }
+
+
+        return;
+
+    }
+
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

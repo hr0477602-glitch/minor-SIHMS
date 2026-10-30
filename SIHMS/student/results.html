@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Results - SIHMS</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#0b263d,#12647d,#20a6c5);
+    padding:20px;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+}
+
+.header{
+    background:white;
+    padding:25px;
+    border-radius:18px;
+    margin-bottom:20px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+.header h1{
+    color:#12344d;
+    margin-bottom:6px;
+}
+
+.header p{
+    color:#777;
+    font-size:14px;
+}
+
+.back{
+    text-decoration:none;
+    background:#12344d;
+    color:white;
+    padding:11px 18px;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:18px;
+    margin-bottom:20px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+.card h2{
+    color:#12344d;
+    margin-bottom:20px;
+}
+
+.summary{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.box{
+    background:#f3fafc;
+    padding:20px;
+    border-radius:12px;
+}
+
+.box small{
+    color:#777;
+}
+
+.box strong{
+    display:block;
+    margin-top:8px;
+    color:#12344d;
+    font-size:22px;
+}
+
+.table-wrapper{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:750px;
+}
+
+th{
+    background:#eef7fa;
+    color:#12344d;
+    padding:14px;
+    text-align:left;
+    font-size:13px;
+}
+
+td{
+    padding:14px;
+    border-bottom:1px solid #eee;
+    color:#475467;
+    font-size:13px;
+}
+
+.pass{
+    color:#168447;
+    font-weight:bold;
+}
+
+.fail{
+    color:#d63031;
+    font-weight:bold;
+}
+
+.grade{
+    display:inline-block;
+    padding:5px 10px;
+    border-radius:15px;
+    background:#e3f5fa;
+    color:#087fa4;
+    font-weight:bold;
+}
+
+.empty{
+    text-align:center;
+    padding:30px;
+    color:#888;
+}
+
+.error{
+    background:#fff0f0;
+    color:#c0392b;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
+    display:none;
+}
+
+@media(max-width:800px){
+
+    .summary{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:600px){
+
+    body{
+        padding:10px;
+    }
+
+    .header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .summary{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<!-- HEADER -->
+
+<div class="header">
+
+    <div>
+
+        <h1>📊 My Results</h1>
+
+        <p id="studentName">
+            Loading student...
+        </p>
+
+    </div>
+
+
+    <a
+        href="dashboard.html"
+        class="back">
+
+        ← Dashboard
+
+    </a>
+
+</div>
+
+
+<!-- ERROR -->
+
+<div
+    id="errorBox"
+    class="error">
+</div>
+
+
+<!-- SUMMARY -->
+
+<div class="card">
+
+    <h2>📈 Result Summary</h2>
+
+
+    <div class="summary">
+
+
+        <div class="box">
+
+            <small>
+                Total Subjects
+            </small>
+
+            <strong id="totalSubjects">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="box">
+
+            <small>
+                Passed
+            </small>
+
+            <strong id="passedSubjects">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="box">
+
+            <small>
+                Failed
+            </small>
+
+            <strong id="failedSubjects">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="box">
+
+            <small>
+                Average
+            </small>
+
+            <strong id="averagePercentage">
+                0%
+            </strong>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- RESULTS -->
+
+<div class="card">
+
+    <h2>📝 Examination Results</h2>
+
+
+    <div class="table-wrapper">
+
+
+        <table>
+
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Subject
+                    </th>
+
+                    <th>
+                        Examination
+                    </th>
+
+                    <th>
+                        Marks
+                    </th>
+
+                    <th>
+                        Percentage
+                    </th>
+
+                    <th>
+                        Grade
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="resultTable">
+
+            </tbody>
+
+
+        </table>
+
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   GET JSON
+===================================================== */
+
+function getJSON(key){
+
+    try{
+
+        const value =
+            localStorage.getItem(key);
+
+        if(!value){
+            return null;
+        }
+
+        return JSON.parse(value);
+
+    }
+
+    catch(error){
+
+        return null;
+
+    }
+
+}
+
+
+/* =====================================================
+   FIND STUDENT
+===================================================== */
+
+function findStudent(){
+
+    let student;
+
+
+    /* 1 */
+
+    student =
+        getJSON(
+            "loggedInStudentData"
+        );
+
+    if(student){
+        return student;
+    }
+
+
+    /* 2 */
+
+    student =
+        getJSON(
+            "currentStudent"
+        );
+
+    if(student){
+        return student;
+    }
+
+
+    /* 3 */
+
+    student =
+        getJSON(
+            "student"
+        );
+
+    if(student){
+        return student;
+    }
+
+
+    /* 4 */
+
+    student =
+        getJSON(
+            "loggedInUser"
+        );
+
+    if(student){
+        return student;
+    }
+
+
+    /* 5 */
+
+    const loginValue =
+        localStorage.getItem(
+            "loggedInStudent"
+        );
+
+
+    if(loginValue){
+
+        try{
+
+            const parsed =
+                JSON.parse(
+                    loginValue
+                );
+
+            if(parsed){
+
+                return parsed;
+
+            }
+
+        }
+
+        catch(error){
+
+        }
+
+    }
+
+
+    /* 6 */
+
+    const students =
+        getJSON(
+            "students"
+        );
+
+
+    if(Array.isArray(students)){
+
+        if(loginValue){
+
+            const cleanId =
+                String(loginValue)
+                .replace(/^"|"$/g,"")
+                .trim()
+                .toLowerCase();
+
+
+            const found =
+                students.find(
+                    function(item){
+
+                        if(!item){
+                            return false;
+                        }
+
+
+                        const values = [
+
+                            item.id,
+
+                            item.studentId,
+
+                            item.studentID,
+
+                            item.enrollment,
+
+                            item.enrollmentNo,
+
+                            item.enrollmentNumber,
+
+                            item.rollNo,
+
+                            item.rollNumber,
+
+                            item.email,
+
+                            item.username
+
+                        ];
+
+
+                        return values.some(
+                            function(value){
+
+                                return value != null
+                                &&
+                                String(value)
+                                .trim()
+                                .toLowerCase()
+                                ===
+                                cleanId;
+
+                            }
+                        );
+
+                    }
+                );
+
+
+            if(found){
+
+                return found;
+
+            }
+
+        }
+
+
+        if(students.length === 1){
+
+            return students[0];
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =====================================================
+   GET STUDENT ID
+===================================================== */
+
+function getStudentId(student){
+
+    if(!student){
+        return "";
+    }
+
+
+    const fields = [
+
+        "enrollment",
+
+        "enrollmentNo",
+
+        "enrollmentNumber",
+
+        "studentId",
+
+        "studentID",
+
+        "rollNo",
+
+        "rollNumber",
+
+        "id",
+
+        "email"
+
+    ];
+
+
+    for(
+        let i=0;
+        i<fields.length;
+        i++
+    ){
+
+        const value =
+            student[
+                fields[i]
+            ];
+
+
+        if(
+            value !== undefined &&
+            value !== null &&
+            String(value).trim() !== ""
+        ){
+
+            return String(value).trim();
+
+        }
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =====================================================
+   GET STUDENT NAME
+===================================================== */
+
+function getStudentName(student){
+
+    if(!student){
+        return "Student";
+    }
+
+
+    const fields = [
+
+        "name",
+
+        "studentName",
+
+        "fullName",
+
+        "student_name"
+
+    ];
+
+
+    for(
+        let i=0;
+        i<fields.length;
+        i++
+    ){
+
+        const value =
+            student[
+                fields[i]
+            ];
+
+
+        if(
+            value !== undefined &&
+            value !== null &&
+            String(value).trim() !== ""
+        ){
+
+            return String(value);
+
+        }
+
+    }
+
+
+    return "Student";
+
+}
+
+
+/* =====================================================
+   CHECK RESULT BELONGS TO STUDENT
+===================================================== */
+
+function matchesStudent(
+    record,
+    studentId
+){
+
+    if(!record){
+        return false;
+    }
+
+
+    const fields = [
+
+        "studentId",
+
+        "studentID",
+
+        "student_id",
+
+        "enrollment",
+
+        "enrollmentNo",
+
+        "enrollmentNumber",
+
+        "rollNo",
+
+        "rollNumber",
+
+        "id"
+
+    ];
+
+
+    for(
+        let i=0;
+        i<fields.length;
+        i++
+    ){
+
+        const value =
+            record[
+                fields[i]
+            ];
+
+
+        if(
+            value !== undefined &&
+            value !== null
+        ){
+
+            if(
+                String(value)
+                .trim()
+                .toLowerCase()
+                ===
+                String(studentId)
+                .trim()
+                .toLowerCase()
+            ){
+
+                return true;
+
+            }
+
+        }
+
+    }
+
+
+    return false;
+
+}
+
+
+/* =====================================================
+   LOAD RESULTS
+===================================================== */
+
+function loadResults(){
+
+    const student =
+        findStudent();
+
+
+    if(!student){
+
+        showError(
+            "Student information not found. Please login again."
+        );
+
+        return;
+
+    }
+
+
+    const name =
+        getStudentName(
+            student
+        );
+
+
+    const studentId =
+        getStudentId(
+            student
+        );
+
+
+    document.getElementById(
+        "studentName"
+    ).textContent =
+        name +
+        " (" +
+        (studentId || "Student") +
+        ")";
+
+
+    /*
+        Get results
+    */
+
+    const results =
+        getJSON(
+            "results"
+        ) || [];
+
+
+    if(!Array.isArray(results)){
+
+        showError(
+            "Result data format is incorrect."
+        );
+
+        return;
+
+    }
+
+
+    /*
+        Filter
+    */
+
+    const records =
+        results.filter(
+            function(record){
+
+                return matchesStudent(
+                    record,
+                    studentId
+                );
+
+            }
+        );
+
+
+    /*
+        Summary
+    */
+
+    const total =
+        records.length;
+
+
+    let passed = 0;
+
+    let failed = 0;
+
+    let percentageTotal = 0;
+
+
+    records.forEach(
+        function(record){
+
+            const status =
+                String(
+                    record.status || ""
+                )
+                .trim()
+                .toLowerCase();
+
+
+            if(
+                status === "pass" ||
+                status === "passed"
+            ){
+
+                passed++;
+
+            }
+
+
+            if(
+                status === "fail" ||
+                status === "failed"
+            ){
+
+                failed++;
+
+            }
+
+
+            let percentage =
+                Number(
+                    record.percentage
+                );
+
+
+            /*
+                If percentage is not saved,
+                calculate it from marks.
+            */
+
+            if(
+                isNaN(percentage)
+            ){
+
+                const marks =
+                    Number(
+                        record.marks
+                    ) || 0;
+
+
+                const maxMarks =
+                    Number(
+                        record.maxMarks
+                    ) || 0;
+
+
+                if(maxMarks > 0){
+
+                    percentage =
+                        (
+                            marks /
+                            maxMarks
+                        ) * 100;
+
+                }
+
+                else{
+
+                    percentage = 0;
+
+                }
+
+            }
+
+
+            percentageTotal +=
+                percentage || 0;
+
+        }
+    );
+
+
+    let average = 0;
+
+
+    if(total > 0){
+
+        average =
+            percentageTotal /
+            total;
+
+    }
+
+
+    document.getElementById(
+        "totalSubjects"
+    ).textContent =
+        total;
+
+
+    document.getElementById(
+        "passedSubjects"
+    ).textContent =
+        passed;
+
+
+    document.getElementById(
+        "failedSubjects"
+    ).textContent =
+        failed;
+
+
+    document.getElementById(
+        "averagePercentage"
+    ).textContent =
+        average.toFixed(2) +
+        "%";
+
+
+    /*
+        TABLE
+    */
+
+    const table =
+        document.getElementById(
+            "resultTable"
+        );
+
+
+    table.innerHTML = "";
+
+
+    if(records.length === 0){
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="6"
+                    class="empty">
+
+                    No result records found.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    records.forEach(
+        function(record){
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            const subject =
+                record.subjectName ||
+                record.subject ||
+                record.subject_name ||
+                "-";
+
+
+            const exam =
+                record.exam ||
+                record.examName ||
+                record.examination ||
+                "-";
+
+
+            const marks =
+                record.marks !== undefined
+                ?
+                record.marks
+                :
+                "-";
+
+
+            const maxMarks =
+                record.maxMarks ||
+                record.totalMarks ||
+                "";
+
+
+            let percentage =
+                record.percentage;
+
+
+            if(
+                percentage === undefined ||
+                percentage === null ||
+                percentage === ""
+            ){
+
+                const m =
+                    Number(marks) || 0;
+
+                const mm =
+                    Number(maxMarks) || 0;
+
+
+                percentage =
+                    mm > 0
+                    ?
+                    ((m/mm)*100).toFixed(2)
+                    :
+                    0;
+
+            }
+
+
+            const grade =
+                record.grade ||
+                record.Grade ||
+                "-";
+
+
+            const status =
+                record.status ||
+                record.result ||
+                "-";
+
+
+            const statusLower =
+                String(status)
+                .toLowerCase();
+
+
+            let statusClass = "";
+
+
+            if(
+                statusLower === "pass" ||
+                statusLower === "passed"
+            ){
+
+                statusClass =
+                    "pass";
+
+            }
+
+
+            if(
+                statusLower === "fail" ||
+                statusLower === "failed"
+            ){
+
+                statusClass =
+                    "fail";
+
+            }
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${subject}
+                </td>
+
+                <td>
+                    ${exam}
+                </td>
+
+                <td>
+                    ${marks}
+                    ${
+                        maxMarks
+                        ?
+                        "/" + maxMarks
+                        :
+                        ""
+                    }
+                </td>
+
+                <td>
+                    ${percentage}%
+                </td>
+
+                <td>
+
+                    <span class="grade">
+                        ${grade}
+                    </span>
+
+                </td>
+
+                <td class="${statusClass}">
+                    ${status}
+                </td>
+
+            `;
+
+
+            table.appendChild(
+                row
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+function showError(message){
+
+    const box =
+        document.getElementById(
+            "errorBox"
+        );
+
+
+    box.style.display =
+        "block";
+
+
+    box.textContent =
+        message;
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        loadResults();
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>

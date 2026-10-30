@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Faculty Login - SIHMS</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#102a43,#12647d,#20a0c5);
+    padding:20px;
+}
+
+.login-box{
+    width:100%;
+    max-width:430px;
+    background:white;
+    padding:35px;
+    border-radius:22px;
+    box-shadow:0 15px 40px rgba(0,0,0,.2);
+}
+
+.logo{
+    text-align:center;
+    font-size:45px;
+    margin-bottom:10px;
+}
+
+h1{
+    text-align:center;
+    color:#12344d;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#777;
+    font-size:14px;
+    margin-bottom:28px;
+}
+
+.field{
+    margin-bottom:18px;
+}
+
+.field label{
+    display:block;
+    color:#475467;
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+.field input{
+    width:100%;
+    padding:13px;
+    border:1px solid #d8e1e5;
+    border-radius:9px;
+    outline:none;
+    font-size:14px;
+}
+
+.field input:focus{
+    border-color:#1597b5;
+}
+
+.login-btn{
+    width:100%;
+    border:none;
+    background:#12344d;
+    color:white;
+    padding:14px;
+    border-radius:9px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:bold;
+}
+
+.login-btn:hover{
+    background:#0d293c;
+}
+
+.message{
+    display:none;
+    margin-top:15px;
+    padding:12px;
+    border-radius:8px;
+    text-align:center;
+    font-size:13px;
+}
+
+.success{
+    background:#e9f8ef;
+    color:#168447;
+}
+
+.error{
+    background:#fff0f0;
+    color:#c0392b;
+}
+
+.back{
+    display:block;
+    text-align:center;
+    margin-top:20px;
+    color:#12647d;
+    text-decoration:none;
+    font-size:14px;
+}
+
+.demo{
+    margin-top:20px;
+    background:#f3fafc;
+    padding:12px;
+    border-radius:8px;
+    color:#667085;
+    font-size:12px;
+    text-align:center;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-box">
+
+
+    <div class="logo">
+        👨‍🏫
+    </div>
+
+
+    <h1>
+        Faculty Login
+    </h1>
+
+
+    <p class="subtitle">
+        SIHMS Faculty Portal
+    </p>
+
+
+    <div class="field">
+
+        <label>
+            Username
+        </label>
+
+        <input
+            type="text"
+            id="username"
+            placeholder="Enter faculty username"
+            autocomplete="username">
+
+    </div>
+
+
+    <div class="field">
+
+        <label>
+            Password
+        </label>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Enter faculty password"
+            autocomplete="current-password">
+
+    </div>
+
+
+    <button
+        class="login-btn"
+        onclick="loginFaculty()">
+
+        Login
+
+    </button>
+
+
+    <div
+        id="message"
+        class="message">
+    </div>
+
+
+    <a
+        href="../index.html"
+        class="back">
+
+        ← Back to Main Page
+
+    </a>
+
+
+    <div class="demo">
+
+        Faculty username and password are created by Admin
+        from Faculty Management.
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+/* =========================================
+   GET FACULTY
+========================================= */
+
+function getFaculty(){
+
+    const data =
+        localStorage.getItem("faculty");
+
+
+    if(!data){
+
+        return [];
+
+    }
+
+
+    try{
+
+        const faculty =
+            JSON.parse(data);
+
+
+        if(Array.isArray(faculty)){
+
+            return faculty;
+
+        }
+
+
+        return [];
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        return [];
+
+    }
+
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+function showMessage(
+    text,
+    type
+){
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    message.textContent =
+        text;
+
+
+    message.className =
+        "message " + type;
+
+
+    message.style.display =
+        "block";
+
+}
+
+
+/* =========================================
+   LOGIN
+========================================= */
+
+function loginFaculty(){
+
+    const username =
+        document.getElementById(
+            "username"
+        )
+        .value
+        .trim();
+
+
+    const password =
+        document.getElementById(
+            "password"
+        )
+        .value;
+
+
+    /* VALIDATION */
+
+    if(!username){
+
+        showMessage(
+            "Please enter username.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(!password){
+
+        showMessage(
+            "Please enter password.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    /* GET FACULTY */
+
+    const facultyList =
+        getFaculty();
+
+
+    if(facultyList.length === 0){
+
+        showMessage(
+            "No faculty found. Please ask Admin to add faculty first.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    /* FIND FACULTY */
+
+    const faculty =
+        facultyList.find(
+            function(item){
+
+                return (
+
+                    String(
+                        item.username || ""
+                    )
+                    .trim()
+                    .toLowerCase()
+                    ===
+                    String(
+                        username
+                    )
+                    .trim()
+                    .toLowerCase()
+
+                    &&
+
+                    String(
+                        item.password || ""
+                    )
+                    ===
+                    String(
+                        password
+                    )
+
+                );
+
+            }
+        );
+
+
+    /* WRONG LOGIN */
+
+    if(!faculty){
+
+        showMessage(
+            "Invalid username or password.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    /* =====================================
+       SAVE LOGGED-IN FACULTY
+    ===================================== */
+
+
+    /*
+       Save complete faculty object
+    */
+
+    localStorage.setItem(
+        "loggedInFacultyData",
+        JSON.stringify(faculty)
+    );
+
+
+    /*
+       Save username
+    */
+
+    localStorage.setItem(
+        "loggedInFaculty",
+        faculty.username
+    );
+
+
+    /*
+       Save current faculty
+    */
+
+    localStorage.setItem(
+        "currentFaculty",
+        JSON.stringify(faculty)
+    );
+
+
+    /*
+       Save Faculty ID
+    */
+
+    localStorage.setItem(
+        "facultyId",
+        faculty.facultyId
+    );
+
+
+    showMessage(
+        "Login successful! Opening dashboard...",
+        "success"
+    );
+
+
+    /* OPEN DASHBOARD */
+
+    setTimeout(
+        function(){
+
+            window.location.href =
+                "dashboard.html";
+
+        },
+        700
+    );
+
+}
+
+
+/* =========================================
+   ENTER KEY LOGIN
+========================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+
+            loginFaculty();
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

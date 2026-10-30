@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Faculty Results - SIHMS</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#16213e,#1f6f8b,#21a0a0);
+    padding:20px;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+.header{
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    margin-bottom:20px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+.header h1{
+    color:#12344d;
+    margin-bottom:6px;
+}
+
+.header p{
+    color:#777;
+    font-size:14px;
+}
+
+.back{
+    text-decoration:none;
+    background:#12344d;
+    color:white;
+    padding:11px 18px;
+    border-radius:9px;
+    font-weight:bold;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    margin-bottom:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+.card h2{
+    color:#12344d;
+    margin-bottom:20px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.field{
+    display:flex;
+    flex-direction:column;
+}
+
+.field label{
+    color:#475467;
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+.field input,
+.field select{
+    padding:12px;
+    border:1px solid #d8e1e5;
+    border-radius:8px;
+    outline:none;
+    background:white;
+}
+
+.field input:focus,
+.field select:focus{
+    border-color:#1597b5;
+}
+
+.add-btn{
+    margin-top:18px;
+    border:none;
+    background:#12344d;
+    color:white;
+    padding:12px 22px;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.add-btn:hover{
+    background:#0d293c;
+}
+
+.message{
+    display:none;
+    padding:12px;
+    margin-top:15px;
+    border-radius:8px;
+}
+
+.success{
+    background:#e8f8ef;
+    color:#168447;
+}
+
+.error{
+    background:#fff0f0;
+    color:#c0392b;
+}
+
+.table-wrapper{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:1000px;
+}
+
+th{
+    background:#eef7fa;
+    color:#12344d;
+    padding:14px;
+    text-align:left;
+    font-size:13px;
+}
+
+td{
+    padding:13px;
+    border-bottom:1px solid #eee;
+    color:#475467;
+    font-size:13px;
+}
+
+.pass{
+    color:#168447;
+    font-weight:bold;
+}
+
+.fail{
+    color:#d63031;
+    font-weight:bold;
+}
+
+.delete-btn{
+    border:none;
+    background:#fff0f0;
+    color:#d63031;
+    padding:7px 10px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.empty{
+    text-align:center;
+    padding:30px;
+    color:#888;
+}
+
+@media(max-width:850px){
+
+    .form-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:600px){
+
+    body{
+        padding:10px;
+    }
+
+    .header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+<!-- HEADER -->
+
+<div class="header">
+
+    <div>
+
+        <h1>
+            📊 Results Management
+        </h1>
+
+        <p id="facultyName">
+            Faculty
+        </p>
+
+    </div>
+
+    <a
+        href="dashboard.html"
+        class="back">
+
+        ← Dashboard
+
+    </a>
+
+</div>
+
+
+<!-- ADD RESULT -->
+
+<div class="card">
+
+    <h2>
+        ➕ Add Student Result
+    </h2>
+
+
+    <div class="form-grid">
+
+
+        <!-- STUDENT -->
+
+        <div class="field">
+
+            <label>
+                Student
+            </label>
+
+            <select id="student">
+
+                <option value="">
+                    Select Student
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- SUBJECT -->
+
+        <div class="field">
+
+            <label>
+                Subject
+            </label>
+
+            <input
+                type="text"
+                id="subjectName"
+                placeholder="Enter subject">
+
+        </div>
+
+
+        <!-- EXAM -->
+
+        <div class="field">
+
+            <label>
+                Examination
+            </label>
+
+            <input
+                type="text"
+                id="exam"
+                placeholder="e.g. Semester Exam">
+
+        </div>
+
+
+        <!-- MARKS -->
+
+        <div class="field">
+
+            <label>
+                Obtained Marks
+            </label>
+
+            <input
+                type="number"
+                id="marks"
+                placeholder="Enter marks"
+                min="0">
+
+        </div>
+
+
+        <!-- MAX MARKS -->
+
+        <div class="field">
+
+            <label>
+                Maximum Marks
+            </label>
+
+            <input
+                type="number"
+                id="maxMarks"
+                placeholder="e.g. 100"
+                min="1"
+                value="100">
+
+        </div>
+
+
+        <!-- GRADE -->
+
+        <div class="field">
+
+            <label>
+                Grade
+            </label>
+
+            <select id="grade">
+
+                <option value="">
+                    Select Grade
+                </option>
+
+                <option value="A+">
+                    A+
+                </option>
+
+                <option value="A">
+                    A
+                </option>
+
+                <option value="B+">
+                    B+
+                </option>
+
+                <option value="B">
+                    B
+                </option>
+
+                <option value="C+">
+                    C+
+                </option>
+
+                <option value="C">
+                    C
+                </option>
+
+                <option value="D">
+                    D
+                </option>
+
+                <option value="F">
+                    F
+                </option>
+
+            </select>
+
+        </div>
+
+
+    </div>
+
+
+    <button
+        class="add-btn"
+        onclick="addResult()">
+
+        + Add Result
+
+    </button>
+
+
+    <div
+        id="message"
+        class="message">
+    </div>
+
+</div>
+
+
+<!-- RECORDS -->
+
+<div class="card">
+
+    <h2>
+        📋 Result Records
+    </h2>
+
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Student</th>
+
+                    <th>Enrollment</th>
+
+                    <th>Subject</th>
+
+                    <th>Exam</th>
+
+                    <th>Marks</th>
+
+                    <th>Percentage</th>
+
+                    <th>Grade</th>
+
+                    <th>Status</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="resultTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+<script>
+
+
+/* =====================================================
+   JSON
+===================================================== */
+
+function getJSON(key){
+
+    try{
+
+        const data =
+            localStorage.getItem(key);
+
+        if(!data){
+            return null;
+        }
+
+        return JSON.parse(data);
+
+    }
+    catch(error){
+
+        return null;
+
+    }
+
+}
+
+
+/* =====================================================
+   FACULTY
+===================================================== */
+
+function getFaculty(){
+
+    let faculty =
+        getJSON(
+            "loggedInFacultyData"
+        );
+
+    if(faculty){
+        return faculty;
+    }
+
+    faculty =
+        getJSON(
+            "currentFaculty"
+        );
+
+    if(faculty){
+        return faculty;
+    }
+
+    faculty =
+        getJSON(
+            "faculty"
+        );
+
+    return faculty || null;
+
+}
+
+
+/* =====================================================
+   STUDENTS
+===================================================== */
+
+function getStudents(){
+
+    const students =
+        getJSON(
+            "students"
+        );
+
+    return Array.isArray(students)
+        ? students
+        : [];
+
+}
+
+
+/* =====================================================
+   STUDENT ID
+===================================================== */
+
+function getStudentId(student){
+
+    if(!student){
+        return "";
+    }
+
+    const values = [
+
+        student.enrollment,
+        student.enrollmentNo,
+        student.enrollmentNumber,
+        student.studentId,
+        student.studentID,
+        student.rollNo,
+        student.rollNumber,
+        student.id
+
+    ];
+
+    for(
+        let i=0;
+        i<values.length;
+        i++
+    ){
+
+        if(
+            values[i] !== undefined &&
+            values[i] !== null &&
+            String(values[i]).trim() !== ""
+        ){
+
+            return String(
+                values[i]
+            ).trim();
+
+        }
+
+    }
+
+    return "";
+
+}
+
+
+/* =====================================================
+   STUDENT NAME
+===================================================== */
+
+function getStudentName(student){
+
+    if(!student){
+        return "Student";
+    }
+
+    return (
+
+        student.name ||
+        student.studentName ||
+        student.fullName ||
+        "Student"
+
+    );
+
+}
+
+
+/* =====================================================
+   LOAD STUDENTS
+===================================================== */
+
+function loadStudents(){
+
+    const students =
+        getStudents();
+
+    const select =
+        document.getElementById(
+            "student"
+        );
+
+    select.innerHTML = `
+
+        <option value="">
+            Select Student
+        </option>
+
+    `;
+
+    students.forEach(
+        function(student){
+
+            const id =
+                getStudentId(
+                    student
+                );
+
+            if(!id){
+                return;
+            }
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                id;
+
+            option.textContent =
+                getStudentName(student)
+                +
+                " - "
+                +
+                id;
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   ADD RESULT
+===================================================== */
+
+function addResult(){
+
+    const studentId =
+        document.getElementById(
+            "student"
+        ).value;
+
+    const subjectName =
+        document.getElementById(
+            "subjectName"
+        ).value.trim();
+
+    const exam =
+        document.getElementById(
+            "exam"
+        ).value.trim();
+
+    const marks =
+        Number(
+            document.getElementById(
+                "marks"
+            ).value
+        );
+
+    const maxMarks =
+        Number(
+            document.getElementById(
+                "maxMarks"
+            ).value
+        );
+
+    const grade =
+        document.getElementById(
+            "grade"
+        ).value;
+
+
+    /* VALIDATION */
+
+    if(!studentId){
+
+        showMessage(
+            "Please select a student.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(!subjectName){
+
+        showMessage(
+            "Please enter subject name.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(!exam){
+
+        showMessage(
+            "Please enter examination name.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(
+        isNaN(marks) ||
+        marks < 0
+    ){
+
+        showMessage(
+            "Please enter valid marks.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(
+        isNaN(maxMarks) ||
+        maxMarks <= 0
+    ){
+
+        showMessage(
+            "Please enter valid maximum marks.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(marks > maxMarks){
+
+        showMessage(
+            "Obtained marks cannot be greater than maximum marks.",
+            "error"
+        );
+
+        return;
+
+    }
+
+    if(!grade){
+
+        showMessage(
+            "Please select grade.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    /* PERCENTAGE */
+
+    const percentage =
+        (
+            marks /
+            maxMarks
+        ) * 100;
+
+
+    /* STATUS */
+
+    const status =
+        percentage >= 35
+        ? "Pass"
+        : "Fail";
+
+
+    /* STUDENT */
+
+    const students =
+        getStudents();
+
+    const student =
+        students.find(
+            function(item){
+
+                return getStudentId(item)
+                    ===
+                    studentId;
+
+            }
+        );
+
+
+    const name =
+        getStudentName(
+            student
+        );
+
+
+    /* OLD RESULTS */
+
+    let results =
+        getJSON(
+            "results"
+        );
+
+    if(
+        !Array.isArray(results)
+    ){
+
+        results = [];
+
+    }
+
+
+    /* RECORD */
+
+    const record = {
+
+        id:
+            Date.now(),
+
+        studentId:
+            studentId,
+
+        studentName:
+            name,
+
+        subjectName:
+            subjectName,
+
+        exam:
+            exam,
+
+        marks:
+            marks,
+
+        maxMarks:
+            maxMarks,
+
+        percentage:
+            Number(
+                percentage.toFixed(2)
+            ),
+
+        grade:
+            grade,
+
+        status:
+            status,
+
+        addedBy:
+            getFacultyId()
+
+    };
+
+
+    results.push(
+        record
+    );
+
+
+    localStorage.setItem(
+        "results",
+        JSON.stringify(
+            results
+        )
+    );
+
+
+    /* CLEAR */
+
+    document.getElementById(
+        "subjectName"
+    ).value = "";
+
+    document.getElementById(
+        "exam"
+    ).value = "";
+
+    document.getElementById(
+        "marks"
+    ).value = "";
+
+    document.getElementById(
+        "maxMarks"
+    ).value = "100";
+
+    document.getElementById(
+        "grade"
+    ).value = "";
+
+
+    showMessage(
+        "Result added successfully.",
+        "success"
+    );
+
+
+    loadResults();
+
+}
+
+
+/* =====================================================
+   FACULTY ID
+===================================================== */
+
+function getFacultyId(){
+
+    const faculty =
+        getFaculty();
+
+    if(!faculty){
+        return "";
+    }
+
+    return (
+
+        faculty.facultyId ||
+        faculty.facultyID ||
+        faculty.employeeId ||
+        faculty.employeeID ||
+        faculty.id ||
+        ""
+
+    );
+
+}
+
+
+/* =====================================================
+   LOAD RESULTS
+===================================================== */
+
+function loadResults(){
+
+    const results =
+        getJSON(
+            "results"
+        );
+
+    const records =
+        Array.isArray(results)
+        ? results
+        : [];
+
+    const table =
+        document.getElementById(
+            "resultTable"
+        );
+
+    table.innerHTML = "";
+
+
+    if(records.length === 0){
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="9"
+                    class="empty">
+
+                    No result records found.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    const sorted =
+        [...records].reverse();
+
+
+    sorted.forEach(
+        function(record){
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            const statusClass =
+                record.status === "Pass"
+                ? "pass"
+                : "fail";
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${record.studentName || "-"}
+                </td>
+
+                <td>
+                    ${record.studentId || "-"}
+                </td>
+
+                <td>
+                    ${record.subjectName || "-"}
+                </td>
+
+                <td>
+                    ${record.exam || "-"}
+                </td>
+
+                <td>
+                    ${record.marks || 0}/${record.maxMarks || 0}
+                </td>
+
+                <td>
+                    ${record.percentage || 0}%
+                </td>
+
+                <td>
+                    ${record.grade || "-"}
+                </td>
+
+                <td class="${statusClass}">
+                    ${record.status || "-"}
+                </td>
+
+                <td>
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteResult(${record.id})">
+
+                        Delete
+
+                    </button>
+
+                </td>
+
+            `;
+
+
+            table.appendChild(
+                row
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   DELETE
+===================================================== */
+
+function deleteResult(id){
+
+    if(
+        !confirm(
+            "Are you sure you want to delete this result?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    let results =
+        getJSON(
+            "results"
+        );
+
+
+    if(
+        !Array.isArray(results)
+    ){
+
+        results = [];
+
+    }
+
+
+    results =
+        results.filter(
+            function(record){
+
+                return Number(
+                    record.id
+                )
+                !==
+                Number(id);
+
+            }
+        );
+
+
+    localStorage.setItem(
+        "results",
+        JSON.stringify(
+            results
+        )
+    );
+
+
+    loadResults();
+
+
+    showMessage(
+        "Result deleted successfully.",
+        "success"
+    );
+
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+function showMessage(
+    text,
+    type
+){
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+    message.style.display =
+        "block";
+
+    message.className =
+        "message " +
+        type;
+
+    message.textContent =
+        text;
+
+
+    setTimeout(
+        function(){
+
+            message.style.display =
+                "none";
+
+        },
+        3000
+    );
+
+}
+
+
+/* =====================================================
+   FACULTY NAME
+===================================================== */
+
+function loadFacultyName(){
+
+    const faculty =
+        getFaculty();
+
+    if(!faculty){
+        return;
+    }
+
+
+    document.getElementById(
+        "facultyName"
+    ).textContent =
+
+        faculty.name ||
+        faculty.facultyName ||
+        faculty.fullName ||
+        "Faculty";
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        loadFacultyName();
+
+        loadStudents();
+
+        loadResults();
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>

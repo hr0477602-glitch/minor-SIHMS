@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Profile - SIHMS</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#0b263d,#12647d,#20a6c5);
+    padding:20px;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+}
+
+.header{
+    background:#fff;
+    padding:25px;
+    border-radius:20px;
+    margin-bottom:20px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+.header h1{
+    color:#12344d;
+    margin-bottom:6px;
+}
+
+.header p{
+    color:#777;
+    font-size:14px;
+}
+
+.back{
+    text-decoration:none;
+    background:#12344d;
+    color:#fff;
+    padding:11px 18px;
+    border-radius:9px;
+    font-weight:bold;
+}
+
+.card{
+    background:#fff;
+    padding:30px;
+    border-radius:20px;
+    margin-bottom:20px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+.profile-top{
+    text-align:center;
+    padding-bottom:25px;
+    border-bottom:1px solid #eee;
+    margin-bottom:25px;
+}
+
+.avatar{
+    width:90px;
+    height:90px;
+    margin:auto;
+    border-radius:50%;
+
+    background:#e8f6fa;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:40px;
+}
+
+.profile-top h2{
+    margin-top:15px;
+    color:#12344d;
+}
+
+.profile-top p{
+    margin-top:6px;
+    color:#777;
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+}
+
+.info-box{
+    background:#f5fafc;
+    padding:18px;
+    border-radius:12px;
+}
+
+.info-box label{
+    display:block;
+    color:#777;
+    font-size:12px;
+    margin-bottom:7px;
+}
+
+.info-box span{
+    color:#12344d;
+    font-weight:bold;
+    font-size:15px;
+    word-break:break-word;
+}
+
+.error{
+    background:#fff3f3;
+    border:1px solid #ffcccc;
+    color:#b42318;
+    padding:18px;
+    border-radius:10px;
+    text-align:center;
+}
+
+@media(max-width:700px){
+
+    body{
+        padding:10px;
+    }
+
+    .header{
+        padding:18px;
+    }
+
+    .header h1{
+        font-size:22px;
+    }
+
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<!-- HEADER -->
+
+<div class="header">
+
+    <div>
+
+        <h1>
+            👤 My Profile
+        </h1>
+
+        <p>
+            Student Profile Information
+        </p>
+
+    </div>
+
+
+    <a
+        href="dashboard.html"
+        class="back">
+
+        ← Dashboard
+
+    </a>
+
+</div>
+
+
+
+<!-- PROFILE -->
+
+<div class="card">
+
+    <div
+        id="profileContent">
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =====================================================
+   JSON HELPER
+===================================================== */
+
+function readJSON(key){
+
+    const value =
+        localStorage.getItem(key);
+
+
+    if(!value){
+        return null;
+    }
+
+
+    try{
+
+        return JSON.parse(value);
+
+    }
+    catch(error){
+
+        return null;
+
+    }
+
+}
+
+
+
+/* =====================================================
+   GET STUDENT
+===================================================== */
+
+function getStudent(){
+
+    let student = null;
+
+
+    /* -----------------------------------------------
+       1. loggedInStudentData
+    ----------------------------------------------- */
+
+    const data1 =
+        localStorage.getItem(
+            "loggedInStudentData"
+        );
+
+
+    if(data1){
+
+        try{
+
+            const obj =
+                JSON.parse(data1);
+
+
+            if(
+                obj &&
+                typeof obj === "object"
+            ){
+
+                student = obj;
+
+            }
+
+        }
+        catch(error){}
+
+    }
+
+
+
+    /* -----------------------------------------------
+       2. student
+    ----------------------------------------------- */
+
+    if(!student){
+
+        const data2 =
+            localStorage.getItem(
+                "student"
+            );
+
+
+        if(data2){
+
+            try{
+
+                const obj =
+                    JSON.parse(data2);
+
+
+                if(
+                    obj &&
+                    typeof obj === "object"
+                ){
+
+                    student = obj;
+
+                }
+
+            }
+            catch(error){}
+
+        }
+
+    }
+
+
+
+    /* -----------------------------------------------
+       3. currentStudent
+    ----------------------------------------------- */
+
+    if(!student){
+
+        const data3 =
+            localStorage.getItem(
+                "currentStudent"
+            );
+
+
+        if(data3){
+
+            try{
+
+                const obj =
+                    JSON.parse(data3);
+
+
+                if(
+                    obj &&
+                    typeof obj === "object"
+                ){
+
+                    student = obj;
+
+                }
+
+            }
+            catch(error){}
+
+        }
+
+    }
+
+
+
+    /* -----------------------------------------------
+       4. loggedInUser
+    ----------------------------------------------- */
+
+    if(!student){
+
+        const data4 =
+            localStorage.getItem(
+                "loggedInUser"
+            );
+
+
+        if(data4){
+
+            try{
+
+                const obj =
+                    JSON.parse(data4);
+
+
+                if(
+                    obj &&
+                    typeof obj === "object"
+                ){
+
+                    student = obj;
+
+                }
+
+            }
+            catch(error){}
+
+        }
+
+    }
+
+
+
+    /* -----------------------------------------------
+       5. FIND FROM STUDENTS ARRAY
+    ----------------------------------------------- */
+
+    if(!student){
+
+        const loginValue =
+            localStorage.getItem(
+                "loggedInStudent"
+            );
+
+
+        const students =
+            readJSON(
+                "students"
+            );
+
+
+        if(
+            loginValue &&
+            Array.isArray(students)
+        ){
+
+            student =
+                students.find(
+                    function(item){
+
+                        return matchesStudent(
+                            item,
+                            loginValue
+                        );
+
+                    }
+                );
+
+        }
+
+    }
+
+
+    return student;
+
+}
+
+
+
+/* =====================================================
+   MATCH STUDENT
+===================================================== */
+
+function matchesStudent(
+    student,
+    value
+){
+
+    if(!student){
+        return false;
+    }
+
+
+    const target =
+        String(value)
+        .trim()
+        .toLowerCase();
+
+
+    const values = [
+
+        student.id,
+
+        student.studentId,
+
+        student.studentID,
+
+        student.enrollment,
+
+        student.enrollmentNo,
+
+        student.enrollmentNumber,
+
+        student.rollNo,
+
+        student.rollNumber,
+
+        student.username,
+
+        student.email
+
+    ];
+
+
+    for(
+        let i = 0;
+        i < values.length;
+        i++
+    ){
+
+        if(
+            values[i] !== undefined &&
+            values[i] !== null
+        ){
+
+            if(
+                String(values[i])
+                .trim()
+                .toLowerCase()
+                ===
+                target
+            ){
+
+                return true;
+
+            }
+
+        }
+
+    }
+
+
+    return false;
+
+}
+
+
+
+/* =====================================================
+   SAFE VALUE
+===================================================== */
+
+function valueOf(){
+
+    const student =
+        arguments[0];
+
+    const keys =
+        Array.prototype.slice.call(
+            arguments,
+            1
+        );
+
+
+    for(
+        let i = 0;
+        i < keys.length;
+        i++
+    ){
+
+        const value =
+            student[keys[i]];
+
+
+        if(
+            value !== undefined &&
+            value !== null &&
+            value !== ""
+        ){
+
+            return value;
+
+        }
+
+    }
+
+
+    return "-";
+
+}
+
+
+
+/* =====================================================
+   LOAD PROFILE
+===================================================== */
+
+function loadProfile(){
+
+    const student =
+        getStudent();
+
+
+    const container =
+        document.getElementById(
+            "profileContent"
+        );
+
+
+    if(!student){
+
+        container.innerHTML = `
+
+            <div class="error">
+
+                <h3>
+                    Student Information Not Found
+                </h3>
+
+                <br>
+
+                Please login again to view
+                your profile.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+
+    /* -----------------------------------------------
+       STUDENT DATA
+    ----------------------------------------------- */
+
+    const name =
+        valueOf(
+            student,
+            "name",
+            "studentName",
+            "fullName"
+        );
+
+
+    const enrollment =
+        valueOf(
+            student,
+            "enrollment",
+            "enrollmentNo",
+            "enrollmentNumber",
+            "studentId",
+            "studentID",
+            "rollNo",
+            "rollNumber",
+            "id"
+        );
+
+
+    const email =
+        valueOf(
+            student,
+            "email",
+            "emailId"
+        );
+
+
+    const phone =
+        valueOf(
+            student,
+            "phone",
+            "mobile",
+            "mobileNo",
+            "contact"
+        );
+
+
+    const department =
+        valueOf(
+            student,
+            "department",
+            "departmentName",
+            "branch"
+        );
+
+
+    const semester =
+        valueOf(
+            student,
+            "semester",
+            "sem"
+        );
+
+
+    const course =
+        valueOf(
+            student,
+            "course",
+            "program",
+            "courseName"
+        );
+
+
+    const gender =
+        valueOf(
+            student,
+            "gender"
+        );
+
+
+    const dob =
+        valueOf(
+            student,
+            "dob",
+            "dateOfBirth",
+            "birthDate"
+        );
+
+
+    const address =
+        valueOf(
+            student,
+            "address",
+            "fullAddress"
+        );
+
+
+    const admissionYear =
+        valueOf(
+            student,
+            "admissionYear",
+            "joiningYear"
+        );
+
+
+
+    /* -----------------------------------------------
+       DISPLAY
+    ----------------------------------------------- */
+
+    container.innerHTML = `
+
+        <div class="profile-top">
+
+            <div class="avatar">
+                👨‍🎓
+            </div>
+
+            <h2>
+                ${name}
+            </h2>
+
+            <p>
+                Enrollment No: ${enrollment}
+            </p>
+
+        </div>
+
+
+        <div class="info-grid">
+
+
+            <div class="info-box">
+
+                <label>
+                    Full Name
+                </label>
+
+                <span>
+                    ${name}
+                </span>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <label>
+                    Enrollment Number
+                </label>
+
+                <span>
+                    ${enrollment}
+                </span>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <label>
+                    Email
+                </label>
+
+                <span>
+                    ${email}
+                </span>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <label>
+                    Phone
+                </label>
+
+                <span>
+                    ${phone}
+                </span>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <label>
+                    Department
+                </label>
+
+                <span>
+                    ${department}
+                </span>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <label>
+                    Course
+                </label>
+
+                <span>
+                    ${course}
+                </span>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <label>
+                    Semester
+                </label>
+
+                <span>
+                    ${semester}
+                </span>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <label>
+                    Gender
+                </label>
+
+                <span>
+                    ${gender}
+                </span>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <label>
+                    Date of Birth
+                </label>
+
+                <span>
+                    ${dob}
+                </span>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <label>
+                    Admission Year
+                </label>
+
+                <span>
+                    ${admissionYear}
+                </span>
+
+            </div>
+
+
+            <div
+                class="info-box"
+                style="grid-column:1/-1;">
+
+                <label>
+                    Address
+                </label>
+
+                <span>
+                    ${address}
+                </span>
+
+            </div>
+
+
+        </div>
+
+    `;
+
+}
+
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadProfile();
+
+</script>
+
+
+</body>
+
+</html>

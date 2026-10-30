@@ -1,0 +1,1921 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reports - SIHMS</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #12344d;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            width: 245px;
+            height: 100vh;
+
+            background: #12344d;
+            color: white;
+
+            padding: 25px 15px;
+        }
+
+        .logo {
+            padding: 0 15px 30px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,.15);
+        }
+
+        .logo h2 {
+            font-size: 24px;
+        }
+
+        .logo p {
+            font-size: 12px;
+            color: #b9c8d3;
+            margin-top: 5px;
+        }
+
+        .nav {
+            margin-top: 25px;
+        }
+
+        .nav a {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 13px 15px;
+
+            margin-bottom: 7px;
+
+            color: #d9e4eb;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #1d4d6b;
+            color: white;
+        }
+
+        .logout {
+            position: absolute;
+
+            bottom: 25px;
+
+            left: 15px;
+            right: 15px;
+
+            background: #d63031 !important;
+            color: white !important;
+        }
+
+
+        /* MAIN */
+
+        .main {
+            margin-left: 245px;
+            min-height: 100vh;
+        }
+
+
+        /* TOPBAR */
+
+        .topbar {
+            height: 75px;
+
+            background: white;
+
+            border-bottom:
+                1px solid #e5e9ef;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 32px;
+        }
+
+        .topbar h1 {
+            font-size: 23px;
+        }
+
+        .topbar p {
+            color: #7b8794;
+
+            font-size: 13px;
+
+            margin-top: 4px;
+        }
+
+        .admin {
+            background: #e8f1f6;
+
+            padding: 10px 15px;
+
+            border-radius: 30px;
+
+            font-size: 13px;
+
+            font-weight: bold;
+        }
+
+
+        /* CONTENT */
+
+        .content {
+            padding: 30px;
+        }
+
+
+        /* STATS */
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+        }
+
+        .stat {
+            background: white;
+
+            border: 1px solid #e7ebf0;
+
+            border-radius: 14px;
+
+            padding: 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            box-shadow:
+                0 3px 10px rgba(0,0,0,.04);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+
+            border-radius: 12px;
+
+            background: #e8f4f8;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 23px;
+        }
+
+        .stat h3 {
+            font-size: 21px;
+        }
+
+        .stat p {
+            color: #7b8794;
+
+            font-size: 12px;
+
+            margin-top: 3px;
+        }
+
+
+        /* CARD */
+
+        .card {
+            background: white;
+
+            border: 1px solid #e7ebf0;
+
+            border-radius: 14px;
+
+            padding: 25px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 3px 10px rgba(0,0,0,.04);
+        }
+
+        .card-header {
+            margin-bottom: 20px;
+        }
+
+        .card-header h2 {
+            font-size: 19px;
+        }
+
+        .card-header p {
+            font-size: 12px;
+
+            color: #7b8794;
+
+            margin-top: 4px;
+        }
+
+
+        /* FILTERS */
+
+        .filters {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        .filter-group {
+            display: flex;
+
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-size: 12px;
+
+            font-weight: bold;
+
+            margin-bottom: 6px;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 11px;
+
+            border: 1px solid #d6dde5;
+
+            border-radius: 8px;
+
+            outline: none;
+
+            font-size: 13px;
+
+            background: white;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            border-color: #1b668f;
+        }
+
+
+        .buttons {
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 5px;
+        }
+
+        .btn {
+            border: none;
+
+            padding: 11px 18px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: #12344d;
+
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0d293d;
+        }
+
+        .btn-light {
+            background: #edf1f4;
+
+            color: #12344d;
+        }
+
+
+        /* TABLE */
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 850px;
+        }
+
+        th {
+            background: #f7f9fb;
+
+            color: #667085;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+        }
+
+        th,
+        td {
+            padding: 14px 12px;
+
+            text-align: left;
+
+            border-bottom:
+                1px solid #edf0f3;
+
+            font-size: 13px;
+        }
+
+        tr:hover {
+            background: #fafcfd;
+        }
+
+
+        /* BADGES */
+
+        .badge {
+            display: inline-block;
+
+            padding: 5px 10px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+
+            font-weight: bold;
+        }
+
+        .paid {
+            background: #e1f5e8;
+
+            color: #218838;
+        }
+
+        .partial {
+            background: #fff2cf;
+
+            color: #9a6700;
+        }
+
+        .pending {
+            background: #ffe3e3;
+
+            color: #c0392b;
+        }
+
+        .pass {
+            background: #e1f5e8;
+
+            color: #218838;
+        }
+
+        .fail {
+            background: #ffe3e3;
+
+            color: #c0392b;
+        }
+
+
+        .empty {
+            text-align: center;
+
+            padding: 35px;
+
+            color: #98a2b3;
+        }
+
+
+        /* PRINT */
+
+        @media print {
+
+            .sidebar,
+            .topbar,
+            .filters,
+            .buttons {
+                display: none !important;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .content {
+                padding: 0;
+            }
+
+            .card {
+                box-shadow: none;
+
+                border: none;
+            }
+
+            body {
+                background: white;
+            }
+        }
+
+
+        /* RESPONSIVE */
+
+        @media(max-width: 950px) {
+
+            .sidebar {
+                width: 200px;
+            }
+
+            .main {
+                margin-left: 200px;
+            }
+
+            .stats {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .filters {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+        }
+
+
+        @media(max-width: 700px) {
+
+            .sidebar {
+                position: relative;
+
+                width: 100%;
+
+                height: auto;
+            }
+
+            .nav {
+                display: grid;
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .logout {
+                position: static !important;
+
+                margin-top: 10px;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .content {
+                padding: 18px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+
+        <h2>SIHMS</h2>
+
+        <p>
+            Student Management System
+        </p>
+
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="dashboard.html">
+            🏠 Dashboard
+        </a>
+
+        <a href="students.html">
+            🎓 Students
+        </a>
+
+        <a href="faculty.html">
+            👨‍🏫 Faculty
+        </a>
+
+        <a href="department.html">
+            🏢 Departments
+        </a>
+
+        <a href="subjects.html">
+            📚 Subjects
+        </a>
+
+        <a href="attendance.html">
+            📅 Attendance
+        </a>
+
+        <a href="results.html">
+            📊 Results
+        </a>
+
+        <a href="fees.html">
+            💰 Fees
+        </a>
+
+        <a href="reports.html" class="active">
+            📑 Reports
+        </a>
+
+        <a
+            href="../index.html"
+            class="logout"
+        >
+            ↪ Logout
+        </a>
+
+    </nav>
+
+</aside>
+
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+        <div>
+
+            <h1>
+                Reports
+            </h1>
+
+            <p>
+                View student academic and fee reports
+            </p>
+
+        </div>
+
+
+        <div class="admin">
+            👤 Admin
+        </div>
+
+    </header>
+
+
+
+    <section class="content">
+
+
+        <!-- STATS -->
+
+        <div class="stats">
+
+
+            <div class="stat">
+
+                <div class="stat-icon">
+                    🎓
+                </div>
+
+                <div>
+
+                    <h3 id="studentCount">
+                        0
+                    </h3>
+
+                    <p>
+                        Total Students
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat">
+
+                <div class="stat-icon">
+                    📅
+                </div>
+
+                <div>
+
+                    <h3 id="attendanceCount">
+                        0
+                    </h3>
+
+                    <p>
+                        Attendance Records
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat">
+
+                <div class="stat-icon">
+                    📊
+                </div>
+
+                <div>
+
+                    <h3 id="resultCount">
+                        0
+                    </h3>
+
+                    <p>
+                        Result Records
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat">
+
+                <div class="stat-icon">
+                    💰
+                </div>
+
+                <div>
+
+                    <h3 id="feeCount">
+                        0
+                    </h3>
+
+                    <p>
+                        Fee Records
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- FILTER -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h2>
+                    Student Report
+                </h2>
+
+                <p>
+                    Select a student to view complete information
+                </p>
+
+            </div>
+
+
+            <div class="filters">
+
+
+                <div class="filter-group">
+
+                    <label>
+                        Select Student
+                    </label>
+
+                    <select id="studentSelect">
+
+                        <option value="">
+                            All Students
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="filter-group">
+
+                    <label>
+                        Search
+                    </label>
+
+                    <input
+                        type="text"
+                        id="search"
+                        placeholder="Search student..."
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <div class="buttons">
+
+                <button
+                    class="btn btn-primary"
+                    onclick="generateReport()"
+                >
+                    Generate Report
+                </button>
+
+
+                <button
+                    class="btn btn-light"
+                    onclick="resetReport()"
+                >
+                    Reset
+                </button>
+
+
+                <button
+                    class="btn btn-light"
+                    onclick="window.print()"
+                >
+                    🖨 Print
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- STUDENT REPORT -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h2>
+                    Student Information
+                </h2>
+
+                <p>
+                    Registered student details
+                </p>
+
+            </div>
+
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Student ID
+                            </th>
+
+                            <th>
+                                Student Name
+                            </th>
+
+                            <th>
+                                Email
+                            </th>
+
+                            <th>
+                                Phone
+                            </th>
+
+                            <th>
+                                Department
+                            </th>
+
+                            <th>
+                                Semester
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="studentTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ATTENDANCE REPORT -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h2>
+                    Attendance Report
+                </h2>
+
+                <p>
+                    Student attendance records
+                </p>
+
+            </div>
+
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Student ID
+                            </th>
+
+                            <th>
+                                Student Name
+                            </th>
+
+                            <th>
+                                Subject
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="attendanceTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- RESULT REPORT -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h2>
+                    Results Report
+                </h2>
+
+                <p>
+                    Student examination results
+                </p>
+
+            </div>
+
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Student ID
+                            </th>
+
+                            <th>
+                                Student Name
+                            </th>
+
+                            <th>
+                                Semester
+                            </th>
+
+                            <th>
+                                Subject
+                            </th>
+
+                            <th>
+                                Exam
+                            </th>
+
+                            <th>
+                                Marks
+                            </th>
+
+                            <th>
+                                Percentage
+                            </th>
+
+                            <th>
+                                Grade
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="resultTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- FEES REPORT -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h2>
+                    Fees Report
+                </h2>
+
+                <p>
+                    Student fee and payment details
+                </p>
+
+            </div>
+
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Receipt
+                            </th>
+
+                            <th>
+                                Student ID
+                            </th>
+
+                            <th>
+                                Student Name
+                            </th>
+
+                            <th>
+                                Total Fee
+                            </th>
+
+                            <th>
+                                Paid
+                            </th>
+
+                            <th>
+                                Due
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Mode
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="feeTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+</main>
+
+
+
+<script>
+
+
+/* ==========================================
+   LOAD DATA
+========================================== */
+
+
+let students =
+    JSON.parse(
+        localStorage.getItem("students")
+    ) || [];
+
+
+let attendance =
+    JSON.parse(
+        localStorage.getItem("attendanceRecords")
+    ) || [];
+
+
+let results =
+    JSON.parse(
+        localStorage.getItem("resultRecords")
+    ) || [];
+
+
+let fees =
+    JSON.parse(
+        localStorage.getItem("feeRecords")
+    ) || [];
+
+
+
+/* ==========================================
+   SAFE HTML
+========================================== */
+
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+
+/* ==========================================
+   GET STUDENT NAME
+========================================== */
+
+/*
+   Important fix:
+
+   Different pages may save student name as:
+   - name
+   - studentName
+
+   This function supports BOTH.
+*/
+
+
+function getStudentName(student) {
+
+    if (!student) {
+        return "Unknown Student";
+    }
+
+    return (
+        student.name ||
+        student.studentName ||
+        student.fullName ||
+        "Unknown Student"
+    );
+
+}
+
+
+
+/* ==========================================
+   GET STUDENT ID
+========================================== */
+
+
+function getStudentId(student) {
+
+    if (!student) {
+        return "";
+    }
+
+    return (
+        student.studentId ||
+        student.id ||
+        student.rollNo ||
+        ""
+    );
+
+}
+
+
+
+/* ==========================================
+   NORMALIZE STUDENTS
+========================================== */
+
+
+students = students.map(student => {
+
+    return {
+
+        ...student,
+
+        studentId:
+            getStudentId(student),
+
+        displayName:
+            getStudentName(student)
+
+    };
+
+});
+
+
+
+/* ==========================================
+   LOAD STUDENT DROPDOWN
+========================================== */
+
+
+function loadStudentDropdown() {
+
+    const select =
+        document.getElementById(
+            "studentSelect"
+        );
+
+
+    select.innerHTML = `
+        <option value="">
+            All Students
+        </option>
+    `;
+
+
+    students.forEach(student => {
+
+        const option =
+            document.createElement("option");
+
+
+        option.value =
+            student.studentId;
+
+
+        option.textContent =
+            `${student.studentId} - ${student.displayName}`;
+
+
+        select.appendChild(option);
+
+    });
+
+}
+
+
+
+/* ==========================================
+   STUDENT TABLE
+========================================== */
+
+
+function displayStudents() {
+
+    const table =
+        document.getElementById(
+            "studentTable"
+        );
+
+
+    const selected =
+        document.getElementById(
+            "studentSelect"
+        ).value;
+
+
+    const search =
+        document.getElementById(
+            "search"
+        ).value.toLowerCase();
+
+
+    table.innerHTML = "";
+
+
+    const filtered =
+        students.filter(student => {
+
+            const text = `
+
+                ${student.studentId}
+
+                ${student.displayName}
+
+                ${student.email || ""}
+
+                ${student.phone || ""}
+
+                ${student.department || ""}
+
+                ${student.semester || ""}
+
+            `.toLowerCase();
+
+
+            const matchSearch =
+                text.includes(search);
+
+
+            const matchStudent =
+                !selected ||
+                student.studentId === selected;
+
+
+            return (
+                matchSearch &&
+                matchStudent
+            );
+
+        });
+
+
+    if (filtered.length === 0) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="6" class="empty">
+                    No student records found.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    filtered.forEach(student => {
+
+        table.innerHTML += `
+
+            <tr>
+
+                <td>
+                    ${escapeHTML(student.studentId)}
+                </td>
+
+                <td>
+                    <b>
+                        ${escapeHTML(student.displayName)}
+                    </b>
+                </td>
+
+                <td>
+                    ${escapeHTML(student.email || "-")}
+                </td>
+
+                <td>
+                    ${escapeHTML(student.phone || "-")}
+                </td>
+
+                <td>
+                    ${escapeHTML(student.department || "-")}
+                </td>
+
+                <td>
+                    ${escapeHTML(student.semester || "-")}
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+}
+
+
+
+/* ==========================================
+   ATTENDANCE REPORT
+========================================== */
+
+
+function displayAttendance() {
+
+    const table =
+        document.getElementById(
+            "attendanceTable"
+        );
+
+
+    const selected =
+        document.getElementById(
+            "studentSelect"
+        ).value;
+
+
+    table.innerHTML = "";
+
+
+    const filtered =
+        attendance.filter(record => {
+
+            return (
+                !selected ||
+                record.studentId === selected
+            );
+
+        });
+
+
+    if (filtered.length === 0) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="5" class="empty">
+                    No attendance records found.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    filtered.forEach(record => {
+
+        /*
+           Important:
+           If attendance record has studentName,
+           use it.
+
+           Otherwise find name from students.
+        */
+
+
+        const student =
+            students.find(
+                s =>
+                    s.studentId ===
+                    record.studentId
+            );
+
+
+        const name =
+            record.studentName ||
+            record.name ||
+            (
+                student
+                    ? student.displayName
+                    : "Unknown Student"
+            );
+
+
+        let badgeClass =
+            "pending";
+
+
+        if (record.status === "Present") {
+            badgeClass = "paid";
+        }
+
+        if (record.status === "Absent") {
+            badgeClass = "fail";
+        }
+
+
+        table.innerHTML += `
+
+            <tr>
+
+                <td>
+                    ${escapeHTML(record.studentId)}
+                </td>
+
+                <td>
+                    <b>
+                        ${escapeHTML(name)}
+                    </b>
+                </td>
+
+                <td>
+                    ${escapeHTML(record.subject || "-")}
+                </td>
+
+                <td>
+                    ${escapeHTML(record.date || "-")}
+                </td>
+
+                <td>
+
+                    <span class="badge ${badgeClass}">
+                        ${escapeHTML(record.status || "-")}
+                    </span>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+}
+
+
+
+/* ==========================================
+   RESULT REPORT
+========================================== */
+
+
+function displayResults() {
+
+    const table =
+        document.getElementById(
+            "resultTable"
+        );
+
+
+    const selected =
+        document.getElementById(
+            "studentSelect"
+        ).value;
+
+
+    table.innerHTML = "";
+
+
+    const filtered =
+        results.filter(record => {
+
+            return (
+                !selected ||
+                record.studentId === selected
+            );
+
+        });
+
+
+    if (filtered.length === 0) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="9" class="empty">
+                    No result records found.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    filtered.forEach(record => {
+
+        const student =
+            students.find(
+                s =>
+                    s.studentId ===
+                    record.studentId
+            );
+
+
+        const name =
+            record.studentName ||
+            record.name ||
+            (
+                student
+                    ? student.displayName
+                    : "Unknown Student"
+            );
+
+
+        const badgeClass =
+            record.status === "Pass"
+                ? "pass"
+                : "fail";
+
+
+        table.innerHTML += `
+
+            <tr>
+
+                <td>
+                    ${escapeHTML(record.studentId)}
+                </td>
+
+                <td>
+                    <b>
+                        ${escapeHTML(name)}
+                    </b>
+                </td>
+
+                <td>
+                    ${escapeHTML(record.semester || "-")}
+                </td>
+
+                <td>
+                    ${escapeHTML(record.subject || "-")}
+                </td>
+
+                <td>
+                    ${escapeHTML(record.examType || "-")}
+                </td>
+
+                <td>
+                    ${escapeHTML(record.obtainedMarks || 0)}
+                    /
+                    ${escapeHTML(record.maxMarks || 0)}
+                </td>
+
+                <td>
+                    ${escapeHTML(record.percentage || 0)}%
+                </td>
+
+                <td>
+                    <b>
+                        ${escapeHTML(record.grade || "-")}
+                    </b>
+                </td>
+
+                <td>
+
+                    <span class="badge ${badgeClass}">
+                        ${escapeHTML(record.status || "-")}
+                    </span>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+}
+
+
+
+/* ==========================================
+   FEES REPORT
+========================================== */
+
+
+function displayFees() {
+
+    const table =
+        document.getElementById(
+            "feeTable"
+        );
+
+
+    const selected =
+        document.getElementById(
+            "studentSelect"
+        ).value;
+
+
+    table.innerHTML = "";
+
+
+    const filtered =
+        fees.filter(record => {
+
+            return (
+                !selected ||
+                record.studentId === selected
+            );
+
+        });
+
+
+    if (filtered.length === 0) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="9" class="empty">
+                    No fee records found.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    filtered.forEach(record => {
+
+        const student =
+            students.find(
+                s =>
+                    s.studentId ===
+                    record.studentId
+            );
+
+
+        const name =
+            record.studentName ||
+            record.name ||
+            (
+                student
+                    ? student.displayName
+                    : "Unknown Student"
+            );
+
+
+        let badgeClass =
+            "pending";
+
+
+        if (record.status === "Paid") {
+            badgeClass = "paid";
+        }
+
+        if (record.status === "Partial") {
+            badgeClass = "partial";
+        }
+
+
+        table.innerHTML += `
+
+            <tr>
+
+                <td>
+                    <b>
+                        ${escapeHTML(record.receiptNo || "-")}
+                    </b>
+                </td>
+
+                <td>
+                    ${escapeHTML(record.studentId || "-")}
+                </td>
+
+                <td>
+                    <b>
+                        ${escapeHTML(name)}
+                    </b>
+                </td>
+
+                <td>
+                    ₹${Number(record.totalFee || 0).toFixed(2)}
+                </td>
+
+                <td>
+                    ₹${Number(record.paidAmount || 0).toFixed(2)}
+                </td>
+
+                <td>
+                    ₹${Number(record.dueAmount || 0).toFixed(2)}
+                </td>
+
+                <td>
+                    ${escapeHTML(record.paymentDate || "-")}
+                </td>
+
+                <td>
+                    ${escapeHTML(record.paymentMode || "-")}
+                </td>
+
+                <td>
+
+                    <span class="badge ${badgeClass}">
+                        ${escapeHTML(record.status || "-")}
+                    </span>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+}
+
+
+
+/* ==========================================
+   GENERATE REPORT
+========================================== */
+
+
+function generateReport() {
+
+    displayStudents();
+
+    displayAttendance();
+
+    displayResults();
+
+    displayFees();
+
+}
+
+
+
+/* ==========================================
+   RESET
+========================================== */
+
+
+function resetReport() {
+
+    document.getElementById(
+        "studentSelect"
+    ).value = "";
+
+
+    document.getElementById(
+        "search"
+    ).value = "";
+
+
+    generateReport();
+
+}
+
+
+
+/* ==========================================
+   STATS
+========================================== */
+
+
+function updateStats() {
+
+    document.getElementById(
+        "studentCount"
+    ).innerText =
+        students.length;
+
+
+    document.getElementById(
+        "attendanceCount"
+    ).innerText =
+        attendance.length;
+
+
+    document.getElementById(
+        "resultCount"
+    ).innerText =
+        results.length;
+
+
+    document.getElementById(
+        "feeCount"
+    ).innerText =
+        fees.length;
+
+}
+
+
+
+/* ==========================================
+   EVENTS
+========================================== */
+
+
+document.getElementById(
+    "studentSelect"
+).addEventListener(
+    "change",
+    generateReport
+);
+
+
+document.getElementById(
+    "search"
+).addEventListener(
+    "input",
+    displayStudents
+);
+
+
+
+/* ==========================================
+   INITIAL LOAD
+========================================== */
+
+
+loadStudentDropdown();
+
+updateStats();
+
+generateReport();
+
+</script>
+
+</body>
+
+</html>

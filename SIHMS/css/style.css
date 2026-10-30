@@ -1,0 +1,813 @@
+/* ========================================
+   GLOBAL
+======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+
+    min-height: 100vh;
+
+    background: #f4f7fb;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+}
+
+
+/* ========================================
+   MAIN LOGIN CONTAINER
+======================================== */
+
+.login-container {
+
+    width: 100%;
+
+    max-width: 1150px;
+
+    min-height: 650px;
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    display: grid;
+
+    grid-template-columns: 1.15fr 0.85fr;
+
+    box-shadow:
+        0 15px 45px rgba(0, 0, 0, 0.15);
+
+}
+
+
+/* ========================================
+   LEFT SECTION
+======================================== */
+
+.login-info {
+
+    background:
+        linear-gradient(
+            135deg,
+            #0788d1,
+            #005eb8
+        );
+
+    color: #ffffff;
+
+    padding: 45px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+}
+
+
+/* ========================================
+   COLLEGE LOGO
+======================================== */
+
+.logo {
+
+    width: 145px;
+
+    height: 145px;
+
+    margin-bottom: 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+
+.logo img {
+
+    width: 145px;
+
+    height: 145px;
+
+    object-fit: contain;
+
+    display: block;
+
+    border-radius: 50%;
+
+}
+
+
+/* ========================================
+   LEFT TITLE
+======================================== */
+
+.login-info h1 {
+
+    font-size: 34px;
+
+    line-height: 1.2;
+
+    font-weight: 700;
+
+    margin-bottom: 15px;
+
+}
+
+
+/* ========================================
+   COLLEGE NAME
+======================================== */
+
+.college-name {
+
+    font-size: 17px;
+
+    font-weight: 600;
+
+    margin-bottom: 12px;
+
+}
+
+
+/* ========================================
+   DESCRIPTION
+======================================== */
+
+.description {
+
+    max-width: 520px;
+
+    font-size: 15px;
+
+    line-height: 1.6;
+
+    opacity: 0.95;
+
+    margin-bottom: 20px;
+
+}
+
+
+/* ========================================
+   FEATURES
+======================================== */
+
+.features {
+
+    width: 100%;
+
+    max-width: 450px;
+
+    text-align: left;
+
+    margin-top: 5px;
+
+}
+
+
+.features p {
+
+    font-size: 14px;
+
+    margin: 9px 0;
+
+}
+
+
+/* ========================================
+   RIGHT LOGIN BOX
+======================================== */
+
+.login-box {
+
+    padding: 45px 50px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    background: #ffffff;
+
+}
+
+
+/* ========================================
+   LOGIN ICON
+======================================== */
+
+.login-icon {
+
+    font-size: 38px;
+
+    margin-bottom: 8px;
+
+}
+
+
+/* ========================================
+   LOGIN TITLE
+======================================== */
+
+.login-box h2 {
+
+    font-size: 32px;
+
+    color: #222222;
+
+    margin-bottom: 5px;
+
+}
+
+
+.subtitle {
+
+    color: #777777;
+
+    font-size: 14px;
+
+    margin-bottom: 25px;
+
+}
+
+
+/* ========================================
+   ROLE BUTTONS
+======================================== */
+
+.roles {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    border: 1px solid #dddddd;
+
+    border-radius: 7px;
+
+    overflow: hidden;
+
+    margin-bottom: 25px;
+
+}
+
+
+.role-btn {
+
+    border: none;
+
+    background: #ffffff;
+
+    padding: 12px 8px;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    color: #555555;
+
+    transition: 0.2s ease;
+
+}
+
+
+.role-btn:hover {
+
+    background: #eef7ff;
+
+}
+
+
+.role-btn.active {
+
+    background: #0797dc;
+
+    color: #ffffff;
+
+}
+
+
+/* ========================================
+   FORM GROUP
+======================================== */
+
+.form-group {
+
+    margin-bottom: 18px;
+
+}
+
+
+.form-group label {
+
+    display: block;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #333333;
+
+    margin-bottom: 8px;
+
+}
+
+
+/* ========================================
+   INPUT
+======================================== */
+
+.form-group input {
+
+    width: 100%;
+
+    padding: 13px 14px;
+
+    border: 1px solid #d6d6d6;
+
+    border-radius: 7px;
+
+    outline: none;
+
+    font-size: 14px;
+
+    transition: 0.2s ease;
+
+}
+
+
+.form-group input:focus {
+
+    border-color: #0797dc;
+
+    box-shadow:
+        0 0 0 3px rgba(7, 151, 220, 0.12);
+
+}
+
+
+/* ========================================
+   LOGIN BUTTON
+======================================== */
+
+.login-btn {
+
+    width: 100%;
+
+    border: none;
+
+    padding: 14px;
+
+    border-radius: 7px;
+
+    background: #0797dc;
+
+    color: #ffffff;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+}
+
+
+.login-btn:hover {
+
+    background: #057eb9;
+
+}
+
+
+.login-btn:active {
+
+    transform: scale(0.99);
+
+}
+
+
+/* ========================================
+   DEMO LOGIN
+======================================== */
+
+.demo-login {
+
+    margin-top: 25px;
+
+    padding: 15px;
+
+    background: #f5f8fb;
+
+    border-radius: 8px;
+
+    border: 1px solid #e4e8ec;
+
+}
+
+
+.demo-login h4 {
+
+    color: #333333;
+
+    margin-bottom: 10px;
+
+    font-size: 15px;
+
+}
+
+
+.demo-login p {
+
+    font-size: 13px;
+
+    color: #555555;
+
+    margin: 5px 0;
+
+}
+
+
+.demo-login b {
+
+    color: #222222;
+
+}
+
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 900px) {
+
+    .login-container {
+
+        grid-template-columns: 1fr;
+
+        max-width: 650px;
+
+    }
+
+
+    .login-info {
+
+        padding: 35px 25px;
+
+    }
+
+
+    .login-box {
+
+        padding: 35px 30px;
+
+    }
+
+
+    .features {
+
+        max-width: 400px;
+
+    }
+
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 600px) {
+
+    body {
+
+        padding: 10px;
+
+        align-items: flex-start;
+
+    }
+
+
+    .login-container {
+
+        margin-top: 10px;
+
+        border-radius: 12px;
+
+    }
+
+
+    .login-info {
+
+        padding: 30px 20px;
+
+    }
+
+
+    .logo {
+
+        width: 110px;
+
+        height: 110px;
+
+        margin-bottom: 18px;
+
+    }
+
+
+    .logo img {
+
+        width: 110px;
+
+        height: 110px;
+
+    }
+
+
+    .login-info h1 {
+
+        font-size: 25px;
+
+    }
+
+
+    .college-name {
+
+        font-size: 15px;
+
+    }
+
+
+    .description {
+
+        font-size: 13px;
+
+    }
+
+
+    .features p {
+
+        font-size: 13px;
+
+    }
+
+
+    .login-box {
+
+        padding: 30px 20px;
+
+    }
+
+
+    .login-box h2 {
+
+        font-size: 27px;
+
+    }
+
+
+    .roles {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .role-btn {
+
+        border-bottom: 1px solid #dddddd;
+
+    }
+
+
+    .role-btn:last-child {
+
+        border-bottom: none;
+
+    }
+```css
+/* ================================
+   SIHMS ADMIN DASHBOARD
+================================ */
+
+.admin-page {
+    min-height: 100vh;
+    padding: 40px 20px;
+    box-sizing: border-box;
+
+    background:
+        linear-gradient(135deg, #eaf6ff 0%, #f7fbff 45%, #e8f4ff 100%);
+}
+
+
+/* Header */
+
+.admin-header {
+    max-width: 1000px;
+    margin: 0 auto 30px;
+    padding: 30px;
+    text-align: center;
+
+    background: white;
+    border-radius: 18px;
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.10);
+}
+
+.admin-header h1 {
+    margin: 0 0 8px;
+
+    font-size: 36px;
+    color: #123b5d;
+}
+
+.admin-header p {
+    margin: 5px 0;
+
+    font-size: 22px;
+    font-weight: 600;
+
+    color: #1597c7;
+}
+
+.admin-header span {
+    color: #666;
+    font-size: 15px;
+}
+
+
+/* Module Container */
+
+.module-container {
+    max-width: 1000px;
+    margin: auto;
+
+    padding: 30px;
+
+    background: rgba(255, 255, 255, 0.92);
+
+    border-radius: 18px;
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.10);
+}
+
+.module-container h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+
+    text-align: center;
+
+    color: #123b5d;
+}
+
+
+/* Module Grid */
+
+.module-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 18px;
+}
+
+
+/* Module Cards */
+
+.module-card {
+    min-height: 95px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    text-decoration: none;
+
+    border-radius: 14px;
+
+    background: linear-gradient(135deg, #13a8d3, #168ec4);
+
+    color: white;
+
+    font-size: 18px;
+    font-weight: 600;
+
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+
+    transition: all 0.25s ease;
+}
+
+.module-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.20);
+
+    background: linear-gradient(135deg, #0e91bb, #126fa8);
+}
+
+.module-card:active {
+    transform: scale(0.98);
+}
+
+.module-icon {
+    font-size: 28px;
+}
+
+
+/* Logout */
+
+.logout-container {
+    max-width: 1000px;
+
+    margin: 25px auto 0;
+
+    text-align: center;
+}
+
+.logout-btn {
+    display: inline-block;
+
+    min-width: 220px;
+
+    padding: 14px 30px;
+
+    border-radius: 12px;
+
+    background: #dc3545;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 17px;
+    font-weight: 600;
+
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+
+    transition: 0.25s;
+}
+
+.logout-btn:hover {
+    background: #b92b39;
+
+    transform: translateY(-2px);
+}
+
+
+/* Mobile */
+
+@media (max-width: 700px) {
+
+    .admin-page {
+        padding: 20px 12px;
+    }
+
+    .admin-header {
+        padding: 22px 15px;
+    }
+
+    .admin-header h1 {
+        font-size: 28px;
+    }
+
+    .module-container {
+        padding: 20px 15px;
+    }
+
+    .module-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .module-card {
+        min-height: 75px;
+    }
+}
+```
+
+}

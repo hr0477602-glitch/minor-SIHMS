@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Subjects - SIHMS</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f2d46, #176b87, #28a9c7);
+            padding: 30px 15px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .header,
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.18);
+        }
+
+        .header h1 {
+            color: #12344d;
+            margin-bottom: 7px;
+        }
+
+        .header p {
+            color: #777;
+        }
+
+        .card h2 {
+            color: #12344d;
+            margin-bottom: 20px;
+        }
+
+        .subject {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #f5f8fa;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border-left: 5px solid #159bc0;
+        }
+
+        .icon {
+            width: 45px;
+            height: 45px;
+            background: #e0f5fa;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .subject h3 {
+            color: #12344d;
+            margin-bottom: 4px;
+        }
+
+        .subject p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            background: #159bc0;
+            color: white;
+            padding: 14px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>My Subjects 📚</h1>
+        <p>Subjects assigned to you</p>
+    </div>
+
+    <div class="card">
+
+        <h2>5th Semester Subjects</h2>
+
+        <div class="subject">
+            <div class="icon">💻</div>
+            <div>
+                <h3>Web Development</h3>
+                <p>Subject Code: WD501</p>
+            </div>
+        </div>
+
+        <div class="subject">
+            <div class="icon">🗄️</div>
+            <div>
+                <h3>Database Management System</h3>
+                <p>Subject Code: DBMS502</p>
+            </div>
+        </div>
+
+        <div class="subject">
+            <div class="icon">☕</div>
+            <div>
+                <h3>Java Programming</h3>
+                <p>Subject Code: JP503</p>
+            </div>
+        </div>
+
+        <div class="subject">
+            <div class="icon">🌐</div>
+            <div>
+                <h3>Computer Networks</h3>
+                <p>Subject Code: CN504</p>
+            </div>
+        </div>
+
+        <div class="subject">
+            <div class="icon">⚙️</div>
+            <div>
+                <h3>Software Engineering</h3>
+                <p>Subject Code: SE505</p>
+            </div>
+        </div>
+
+        <a href="dashboard.html" class="back">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

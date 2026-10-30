@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Fees - SIHMS</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#0b263d,#12647d,#20a6c5);
+    padding:20px;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+}
+
+
+/* HEADER */
+
+.header{
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    margin-bottom:20px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+.header h1{
+    color:#12344d;
+    margin-bottom:6px;
+}
+
+.header p{
+    color:#777;
+    font-size:14px;
+}
+
+.back{
+    text-decoration:none;
+    background:#12344d;
+    color:white;
+    padding:11px 18px;
+    border-radius:9px;
+    font-weight:bold;
+}
+
+
+/* CARD */
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    margin-bottom:20px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+.card h2{
+    color:#12344d;
+    margin-bottom:20px;
+}
+
+
+/* SUMMARY */
+
+.summary{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.box{
+    background:#f3fafc;
+    padding:20px;
+    border-radius:12px;
+}
+
+.box small{
+    color:#777;
+    font-size:12px;
+}
+
+.box strong{
+    display:block;
+    color:#12344d;
+    font-size:21px;
+    margin-top:7px;
+}
+
+
+/* TABLE */
+
+.table-wrapper{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:800px;
+}
+
+th{
+    background:#eef7fa;
+    color:#12344d;
+    padding:14px;
+    text-align:left;
+    font-size:13px;
+}
+
+td{
+    padding:14px;
+    border-bottom:1px solid #eee;
+    color:#475467;
+    font-size:13px;
+}
+
+
+/* STATUS */
+
+.paid{
+    color:#168447;
+    font-weight:bold;
+}
+
+.pending{
+    color:#d63031;
+    font-weight:bold;
+}
+
+.partial{
+    color:#e67e22;
+    font-weight:bold;
+}
+
+
+/* EMPTY */
+
+.empty{
+    text-align:center;
+    padding:30px;
+    color:#888;
+}
+
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+    body{
+        padding:10px;
+    }
+
+    .header{
+        padding:18px;
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .header h1{
+        font-size:22px;
+    }
+
+    .summary{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<div class="header">
+
+    <div>
+
+        <h1>
+            💰 My Fees
+        </h1>
+
+        <p id="studentName">
+            Student Fees
+        </p>
+
+    </div>
+
+
+    <a
+        href="dashboard.html"
+        class="back">
+
+        ← Dashboard
+
+    </a>
+
+</div>
+
+
+<!-- =====================================================
+     SUMMARY
+===================================================== -->
+
+<div class="card">
+
+    <h2>
+        📊 Fees Summary
+    </h2>
+
+
+    <div class="summary">
+
+
+        <div class="box">
+
+            <small>
+                Total Fees
+            </small>
+
+            <strong id="totalFees">
+                ₹0
+            </strong>
+
+        </div>
+
+
+        <div class="box">
+
+            <small>
+                Total Paid
+            </small>
+
+            <strong id="totalPaid">
+                ₹0
+            </strong>
+
+        </div>
+
+
+        <div class="box">
+
+            <small>
+                Total Pending
+            </small>
+
+            <strong id="totalPending">
+                ₹0
+            </strong>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     FEES RECORDS
+===================================================== -->
+
+<div class="card">
+
+    <h2>
+        📋 My Fee Records
+    </h2>
+
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Academic Year
+                    </th>
+
+                    <th>
+                        Semester
+                    </th>
+
+                    <th>
+                        Total Fees
+                    </th>
+
+                    <th>
+                        Paid
+                    </th>
+
+                    <th>
+                        Pending
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="feesTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   JSON HELPER
+===================================================== */
+
+function getJSON(key){
+
+    try{
+
+        const data =
+            localStorage.getItem(key);
+
+        if(!data){
+            return null;
+        }
+
+        return JSON.parse(data);
+
+    }
+
+    catch(error){
+
+        return null;
+
+    }
+
+}
+
+
+/* =====================================================
+   GET STUDENT
+===================================================== */
+
+function getStudent(){
+
+    /* METHOD 1 */
+
+    let student =
+        getJSON(
+            "loggedInStudentData"
+        );
+
+
+    if(student){
+        return student;
+    }
+
+
+    /* METHOD 2 */
+
+    const loggedInStudent =
+        localStorage.getItem(
+            "loggedInStudent"
+        );
+
+
+    const students =
+        getJSON(
+            "students"
+        ) || [];
+
+
+    if(
+        loggedInStudent &&
+        Array.isArray(students)
+    ){
+
+        student =
+            students.find(
+                function(item){
+
+                    const id =
+
+                        item.enrollment ||
+
+                        item.enrollmentNo ||
+
+                        item.enrollmentNumber ||
+
+                        item.studentId ||
+
+                        item.id ||
+
+                        "";
+
+
+                    return String(id).trim()
+                        ===
+                        String(loggedInStudent).trim();
+
+                }
+            );
+
+
+        if(student){
+            return student;
+        }
+
+    }
+
+
+    /* METHOD 3 */
+
+    student =
+        getJSON(
+            "student"
+        );
+
+
+    if(student){
+        return student;
+    }
+
+
+    return null;
+
+}
+
+
+/* =====================================================
+   GET STUDENT ID
+===================================================== */
+
+function getStudentId(student){
+
+    if(!student){
+        return "";
+    }
+
+
+    const values = [
+
+        student.enrollment,
+
+        student.enrollmentNo,
+
+        student.enrollmentNumber,
+
+        student.studentId,
+
+        student.studentID,
+
+        student.rollNo,
+
+        student.rollNumber,
+
+        student.id
+
+    ];
+
+
+    for(
+        let i=0;
+        i<values.length;
+        i++
+    ){
+
+        if(
+            values[i] !== undefined &&
+            values[i] !== null &&
+            String(values[i]).trim() !== ""
+        ){
+
+            return String(
+                values[i]
+            ).trim();
+
+        }
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =====================================================
+   GET STUDENT NAME
+===================================================== */
+
+function getStudentName(student){
+
+    if(!student){
+        return "Student";
+    }
+
+
+    return (
+
+        student.name ||
+
+        student.studentName ||
+
+        student.fullName ||
+
+        "Student"
+
+    );
+
+}
+
+
+/* =====================================================
+   FORMAT MONEY
+===================================================== */
+
+function money(value){
+
+    return "₹" +
+        Number(
+            value || 0
+        ).toLocaleString(
+            "en-IN"
+        );
+
+}
+
+
+/* =====================================================
+   LOAD FEES
+===================================================== */
+
+function loadFees(){
+
+    const student =
+        getStudent();
+
+
+    const table =
+        document.getElementById(
+            "feesTable"
+        );
+
+
+    table.innerHTML = "";
+
+
+    if(!student){
+
+        document.getElementById(
+            "studentName"
+        ).textContent =
+            "Student information not found";
+
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="6"
+                    class="empty">
+
+                    Student information not found.
+
+                    <br><br>
+
+                    Please login again.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    const studentId =
+        getStudentId(
+            student
+        );
+
+
+    const name =
+        getStudentName(
+            student
+        );
+
+
+    document.getElementById(
+        "studentName"
+    ).textContent =
+
+        name +
+        " (" +
+        studentId +
+        ")";
+
+
+    /* GET FEES */
+
+    const fees =
+        getJSON(
+            "fees"
+        );
+
+
+    const allFees =
+        Array.isArray(fees)
+        ? fees
+        : [];
+
+
+    /* FIND STUDENT RECORDS */
+
+    const records =
+        allFees.filter(
+            function(record){
+
+                return String(
+                    record.studentId
+                ).trim()
+                ===
+                String(
+                    studentId
+                ).trim();
+
+            }
+        );
+
+
+    /* TOTALS */
+
+    let totalFees = 0;
+
+    let totalPaid = 0;
+
+    let totalPending = 0;
+
+
+    records.forEach(
+        function(record){
+
+            totalFees +=
+                Number(
+                    record.totalFees
+                ) || 0;
+
+
+            totalPaid +=
+                Number(
+                    record.paid
+                ) || 0;
+
+
+            totalPending +=
+                Number(
+                    record.pending
+                ) || 0;
+
+        }
+    );
+
+
+    document.getElementById(
+        "totalFees"
+    ).textContent =
+        money(totalFees);
+
+
+    document.getElementById(
+        "totalPaid"
+    ).textContent =
+        money(totalPaid);
+
+
+    document.getElementById(
+        "totalPending"
+    ).textContent =
+        money(totalPending);
+
+
+    /* NO RECORD */
+
+    if(records.length === 0){
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="6"
+                    class="empty">
+
+                    No fee records found.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    /* SHOW RECORDS */
+
+    records.forEach(
+        function(record){
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            let statusClass =
+                "pending";
+
+
+            if(
+                record.status === "Paid"
+            ){
+
+                statusClass =
+                    "paid";
+
+            }
+            else if(
+                record.status === "Partial"
+            ){
+
+                statusClass =
+                    "partial";
+
+            }
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${record.academicYear || "-"}
+                </td>
+
+                <td>
+                    Semester ${record.semester || "-"}
+                </td>
+
+                <td>
+                    ${money(record.totalFees)}
+                </td>
+
+                <td>
+                    ${money(record.paid)}
+                </td>
+
+                <td>
+                    ${money(record.pending)}
+                </td>
+
+                <td class="${statusClass}">
+
+                    ${record.status || "Pending"}
+
+                </td>
+
+            `;
+
+
+            table.appendChild(
+                row
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        loadFees();
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

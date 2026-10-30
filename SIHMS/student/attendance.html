@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Attendance - SIHMS</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#0b263d,#12647d,#20a6c5);
+    padding:20px;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+}
+
+.header{
+    background:white;
+    padding:25px;
+    border-radius:18px;
+    margin-bottom:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+.header h1{
+    color:#12344d;
+    margin-bottom:6px;
+}
+
+.header p{
+    color:#777;
+    font-size:14px;
+}
+
+.back{
+    text-decoration:none;
+    background:#12344d;
+    color:white;
+    padding:11px 18px;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:18px;
+    margin-bottom:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+.card h2{
+    color:#12344d;
+    margin-bottom:20px;
+}
+
+.summary{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.box{
+    background:#f3fafc;
+    padding:20px;
+    border-radius:12px;
+}
+
+.box small{
+    color:#777;
+}
+
+.box strong{
+    display:block;
+    margin-top:8px;
+    color:#12344d;
+    font-size:22px;
+}
+
+.table-wrapper{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:600px;
+}
+
+th{
+    background:#eef7fa;
+    color:#12344d;
+    padding:14px;
+    text-align:left;
+}
+
+td{
+    padding:14px;
+    border-bottom:1px solid #eee;
+    color:#475467;
+}
+
+.present{
+    color:#168447;
+    font-weight:bold;
+}
+
+.absent{
+    color:#d63031;
+    font-weight:bold;
+}
+
+.empty{
+    text-align:center;
+    padding:30px;
+    color:#888;
+}
+
+.error{
+    background:#fff0f0;
+    color:#c0392b;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
+    display:none;
+}
+
+@media(max-width:700px){
+
+    body{
+        padding:10px;
+    }
+
+    .header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .summary{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div>
+
+            <h1>📋 My Attendance</h1>
+
+            <p id="studentName">
+                Loading student...
+            </p>
+
+        </div>
+
+        <a href="dashboard.html" class="back">
+            ← Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- ERROR -->
+
+    <div id="errorBox" class="error"></div>
+
+
+    <!-- SUMMARY -->
+
+    <div class="card">
+
+        <h2>📊 Attendance Summary</h2>
+
+        <div class="summary">
+
+            <div class="box">
+
+                <small>Total Classes</small>
+
+                <strong id="totalClasses">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="box">
+
+                <small>Present</small>
+
+                <strong id="presentClasses">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="box">
+
+                <small>Attendance</small>
+
+                <strong id="attendancePercentage">
+                    0%
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ATTENDANCE TABLE -->
+
+    <div class="card">
+
+        <h2>📝 Attendance Records</h2>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Subject</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="attendanceTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   GET JSON FROM LOCAL STORAGE
+===================================================== */
+
+function getJSON(key){
+
+    try{
+
+        const value =
+            localStorage.getItem(key);
+
+        if(!value){
+            return null;
+        }
+
+        return JSON.parse(value);
+
+    }catch(error){
+
+        return null;
+
+    }
+}
+
+
+/* =====================================================
+   FIND LOGGED-IN STUDENT
+===================================================== */
+
+function findStudent(){
+
+    let student;
+
+
+    /* 1. loggedInStudentData */
+
+    student =
+        getJSON("loggedInStudentData");
+
+    if(student){
+        return student;
+    }
+
+
+    /* 2. currentStudent */
+
+    student =
+        getJSON("currentStudent");
+
+    if(student){
+        return student;
+    }
+
+
+    /* 3. student */
+
+    student =
+        getJSON("student");
+
+    if(student){
+        return student;
+    }
+
+
+    /* 4. loggedInUser */
+
+    student =
+        getJSON("loggedInUser");
+
+    if(student){
+        return student;
+    }
+
+
+    /* 5. loggedInStudent */
+
+    const loginValue =
+        localStorage.getItem(
+            "loggedInStudent"
+        );
+
+
+    if(loginValue){
+
+        try{
+
+            const parsed =
+                JSON.parse(loginValue);
+
+            if(parsed){
+
+                return parsed;
+
+            }
+
+        }catch(error){
+
+            /*
+                It may only be an
+                enrollment number.
+            */
+
+        }
+
+    }
+
+
+    /* 6. Find inside students */
+
+    const students =
+        getJSON("students");
+
+
+    if(Array.isArray(students)){
+
+        let id =
+            loginValue;
+
+
+        if(id){
+
+            id =
+                String(id)
+                .replace(/^"|"$/g,"")
+                .trim()
+                .toLowerCase();
+
+
+            const found =
+                students.find(function(item){
+
+                    if(!item){
+                        return false;
+                    }
+
+
+                    const ids = [
+
+                        item.id,
+
+                        item.studentId,
+
+                        item.studentID,
+
+                        item.enrollment,
+
+                        item.enrollmentNo,
+
+                        item.enrollmentNumber,
+
+                        item.rollNo,
+
+                        item.rollNumber,
+
+                        item.email,
+
+                        item.username
+
+                    ];
+
+
+                    return ids.some(function(value){
+
+                        return value != null &&
+                        String(value)
+                        .trim()
+                        .toLowerCase()
+                        === id;
+
+                    });
+
+                });
+
+
+            if(found){
+
+                return found;
+
+            }
+
+        }
+
+
+        /*
+            If only one student exists
+        */
+
+        if(students.length === 1){
+
+            return students[0];
+
+        }
+
+    }
+
+
+    return null;
+}
+
+
+/* =====================================================
+   GET STUDENT ID
+===================================================== */
+
+function getStudentId(student){
+
+    if(!student){
+        return "";
+    }
+
+
+    const fields = [
+
+        "enrollment",
+
+        "enrollmentNo",
+
+        "enrollmentNumber",
+
+        "studentId",
+
+        "studentID",
+
+        "rollNo",
+
+        "rollNumber",
+
+        "id",
+
+        "email"
+
+    ];
+
+
+    for(let i=0;i<fields.length;i++){
+
+        const value =
+            student[fields[i]];
+
+
+        if(
+            value !== undefined &&
+            value !== null &&
+            String(value).trim() !== ""
+        ){
+
+            return String(value).trim();
+
+        }
+
+    }
+
+
+    return "";
+}
+
+
+/* =====================================================
+   GET STUDENT NAME
+===================================================== */
+
+function getStudentName(student){
+
+    if(!student){
+        return "Student";
+    }
+
+
+    const fields = [
+
+        "name",
+
+        "studentName",
+
+        "fullName",
+
+        "student_name"
+
+    ];
+
+
+    for(let i=0;i<fields.length;i++){
+
+        const value =
+            student[fields[i]];
+
+
+        if(
+            value !== undefined &&
+            value !== null &&
+            String(value).trim() !== ""
+        ){
+
+            return String(value);
+
+        }
+
+    }
+
+
+    return "Student";
+}
+
+
+/* =====================================================
+   CHECK ATTENDANCE RECORD
+===================================================== */
+
+function matchesStudent(record, studentId){
+
+    if(!record){
+        return false;
+    }
+
+
+    /*
+        Different possible field names
+    */
+
+    const fields = [
+
+        "studentId",
+
+        "studentID",
+
+        "student_id",
+
+        "enrollment",
+
+        "enrollmentNo",
+
+        "enrollmentNumber",
+
+        "rollNo",
+
+        "rollNumber",
+
+        "id"
+
+    ];
+
+
+    /*
+        If record has no student identifier,
+        do not show it to every student.
+    */
+
+    let hasId = false;
+
+
+    for(let i=0;i<fields.length;i++){
+
+        if(
+            record[fields[i]] !== undefined &&
+            record[fields[i]] !== null
+        ){
+
+            hasId = true;
+
+            if(
+                String(record[fields[i]])
+                .trim()
+                .toLowerCase()
+                ===
+                String(studentId)
+                .trim()
+                .toLowerCase()
+            ){
+
+                return true;
+
+            }
+
+        }
+
+    }
+
+
+    return false;
+}
+
+
+/* =====================================================
+   LOAD ATTENDANCE
+===================================================== */
+
+function loadAttendance(){
+
+    const student =
+        findStudent();
+
+
+    if(!student){
+
+        showError(
+            "Student information not found. Please login again."
+        );
+
+        return;
+
+    }
+
+
+    const studentName =
+        getStudentName(student);
+
+
+    const studentId =
+        getStudentId(student);
+
+
+    document.getElementById(
+        "studentName"
+    ).textContent =
+        studentName +
+        " (" +
+        (studentId || "Student") +
+        ")";
+
+
+    /*
+        Get attendance data
+    */
+
+    const attendance =
+        getJSON("attendance") || [];
+
+
+    if(!Array.isArray(attendance)){
+
+        showError(
+            "Attendance data format is incorrect."
+        );
+
+        return;
+
+    }
+
+
+    /*
+        Filter records
+    */
+
+    const records =
+        attendance.filter(function(record){
+
+            return matchesStudent(
+                record,
+                studentId
+            );
+
+        });
+
+
+    /*
+        Summary
+    */
+
+    const total =
+        records.length;
+
+
+    let present = 0;
+
+
+    records.forEach(function(record){
+
+        const status =
+            String(
+                record.status || ""
+            )
+            .trim()
+            .toLowerCase();
+
+
+        if(
+            status === "present" ||
+            status === "p" ||
+            status === "yes"
+        ){
+
+            present++;
+
+        }
+
+    });
+
+
+    let percentage = 0;
+
+
+    if(total > 0){
+
+        percentage =
+            (present / total) * 100;
+
+    }
+
+
+    document.getElementById(
+        "totalClasses"
+    ).textContent =
+        total;
+
+
+    document.getElementById(
+        "presentClasses"
+    ).textContent =
+        present;
+
+
+    document.getElementById(
+        "attendancePercentage"
+    ).textContent =
+        percentage.toFixed(2) + "%";
+
+
+    /*
+        Table
+    */
+
+    const table =
+        document.getElementById(
+            "attendanceTable"
+        );
+
+
+    table.innerHTML = "";
+
+
+    if(records.length === 0){
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="3"
+                    class="empty">
+
+                    No attendance records found.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    records.forEach(function(record){
+
+        const row =
+            document.createElement("tr");
+
+
+        const subject =
+            record.subjectName ||
+            record.subject ||
+            record.subject_name ||
+            "-";
+
+
+        const date =
+            record.date ||
+            record.attendanceDate ||
+            record.day ||
+            "-";
+
+
+        const status =
+            record.status ||
+            record.attendance ||
+            "-";
+
+
+        const statusLower =
+            String(status)
+            .toLowerCase();
+
+
+        let statusClass =
+            "";
+
+
+        if(
+            statusLower === "present" ||
+            statusLower === "p"
+        ){
+
+            statusClass = "present";
+
+        }
+
+
+        if(
+            statusLower === "absent" ||
+            statusLower === "a"
+        ){
+
+            statusClass = "absent";
+
+        }
+
+
+        row.innerHTML = `
+
+            <td>
+                ${subject}
+            </td>
+
+            <td>
+                ${date}
+            </td>
+
+            <td class="${statusClass}">
+                ${status}
+            </td>
+
+        `;
+
+
+        table.appendChild(row);
+
+    });
+
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+function showError(message){
+
+    const box =
+        document.getElementById(
+            "errorBox"
+        );
+
+
+    box.style.display =
+        "block";
+
+
+    box.textContent =
+        message;
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        loadAttendance();
+
+    }
+);
+
+</script>
+
+</body>
+</html>

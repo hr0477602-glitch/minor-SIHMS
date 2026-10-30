@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Notices - SIHMS</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#0b263d,#12647d,#20a6c5);
+    padding:20px;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+}
+
+
+/* HEADER */
+
+.header{
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    margin-bottom:20px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+.header h1{
+    color:#12344d;
+    margin-bottom:6px;
+}
+
+.header p{
+    color:#777;
+    font-size:14px;
+}
+
+.back{
+    text-decoration:none;
+    background:#12344d;
+    color:white;
+    padding:11px 18px;
+    border-radius:9px;
+    font-weight:bold;
+}
+
+
+/* CARD */
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+.card h2{
+    color:#12344d;
+    margin-bottom:20px;
+}
+
+
+/* NOTICE */
+
+.notice{
+    background:#f5fafc;
+    border-left:5px solid #20a6c5;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:15px;
+}
+
+.notice:last-child{
+    margin-bottom:0;
+}
+
+.notice-title{
+    color:#12344d;
+    font-size:17px;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+.notice-date{
+    color:#888;
+    font-size:12px;
+    margin-bottom:12px;
+}
+
+.notice-message{
+    color:#475467;
+    line-height:1.6;
+    font-size:14px;
+}
+
+.notice-badge{
+    display:inline-block;
+    margin-top:12px;
+    padding:5px 10px;
+    border-radius:15px;
+    background:#e3f5fa;
+    color:#087fa4;
+    font-size:11px;
+    font-weight:bold;
+}
+
+
+/* EMPTY */
+
+.empty{
+    text-align:center;
+    padding:40px 20px;
+    color:#888;
+}
+
+.empty-icon{
+    font-size:45px;
+    margin-bottom:10px;
+}
+
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+    body{
+        padding:10px;
+    }
+
+    .header{
+        padding:18px;
+    }
+
+    .header h1{
+        font-size:22px;
+    }
+
+    .card{
+        padding:18px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<!-- HEADER -->
+
+<div class="header">
+
+    <div>
+
+        <h1>
+            Notices & Announcements
+        </h1>
+
+        <p id="studentName">
+            Student Notices
+        </p>
+
+    </div>
+
+
+    <a
+        href="dashboard.html"
+        class="back">
+
+        ← Dashboard
+
+    </a>
+
+</div>
+
+
+
+<!-- NOTICES -->
+
+<div class="card">
+
+    <h2>
+        📢 Latest Notices
+    </h2>
+
+
+    <div id="noticeContainer">
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =====================================
+   GET LOGGED-IN STUDENT
+===================================== */
+
+let student = null;
+
+
+/* METHOD 1 */
+
+const savedStudent =
+    localStorage.getItem(
+        "loggedInStudentData"
+    );
+
+
+if(savedStudent){
+
+    try{
+
+        student =
+            JSON.parse(
+                savedStudent
+            );
+
+    }
+    catch(error){
+
+        student = null;
+
+    }
+
+}
+
+
+
+/* METHOD 2 */
+
+if(!student){
+
+    const enrollment =
+        localStorage.getItem(
+            "loggedInStudent"
+        );
+
+
+    const students =
+        JSON.parse(
+            localStorage.getItem(
+                "students"
+            )
+        ) || [];
+
+
+    if(enrollment){
+
+        student =
+            students.find(
+                function(item){
+
+                    return String(
+                        item.enrollment
+                    ).trim()
+                    ===
+                    String(
+                        enrollment
+                    ).trim();
+
+                }
+            );
+
+    }
+
+}
+
+
+
+/* METHOD 3 */
+
+if(!student){
+
+    const oldStudent =
+        localStorage.getItem(
+            "student"
+        );
+
+
+    if(oldStudent){
+
+        try{
+
+            student =
+                JSON.parse(
+                    oldStudent
+                );
+
+        }
+        catch(error){
+
+            student = null;
+
+        }
+
+    }
+
+}
+
+
+
+/* =====================================
+   STUDENT NAME
+===================================== */
+
+if(student){
+
+    const name =
+        student.name ||
+        student.studentName ||
+        "Student";
+
+
+    const enrollment =
+        student.enrollment ||
+        student.enrollmentNo ||
+        student.id ||
+        "";
+
+
+    document.getElementById(
+        "studentName"
+    ).textContent =
+        name +
+        " (" +
+        enrollment +
+        ")";
+
+}
+
+
+
+/* =====================================
+   LOAD NOTICES
+===================================== */
+
+const notices =
+    JSON.parse(
+        localStorage.getItem(
+            "notices"
+        )
+    ) || [];
+
+
+const container =
+    document.getElementById(
+        "noticeContainer"
+    );
+
+
+
+/* =====================================
+   NO NOTICES
+===================================== */
+
+if(notices.length === 0){
+
+    container.innerHTML = `
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                📭
+            </div>
+
+            <p>
+                No notices or announcements available.
+            </p>
+
+        </div>
+
+    `;
+
+}
+
+
+
+/* =====================================
+   DISPLAY NOTICES
+===================================== */
+
+else{
+
+    /*
+       Newest notices first
+    */
+
+    const sortedNotices =
+        [...notices].reverse();
+
+
+    sortedNotices.forEach(
+        function(notice){
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "notice";
+
+
+            div.innerHTML = `
+
+                <div class="notice-title">
+
+                    ${notice.title || "Notice"}
+
+                </div>
+
+
+                <div class="notice-date">
+
+                    📅 ${notice.date || "Date not available"}
+
+                </div>
+
+
+                <div class="notice-message">
+
+                    ${notice.message ||
+                    notice.description ||
+                    notice.content ||
+                    "No details available."}
+
+                </div>
+
+
+                ${
+                    notice.category
+                    ?
+                    `
+                    <span class="notice-badge">
+
+                        ${notice.category}
+
+                    </span>
+                    `
+                    :
+                    ""
+                }
+
+            `;
+
+
+            container.appendChild(
+                div
+            );
+
+        }
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>
